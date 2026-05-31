@@ -9,6 +9,7 @@
     { "source": "/connexion", "destination": "/connexion.html" },
     { "source": "/inscription", "destination": "/inscription.html" },
     { "source": "/dashboard", "destination": "/dashboard.html" },
+    { "source": "/admin", "destination": "/admin.html" },
     { "source": "/", "destination": "/index.html" }
   ]
 }
