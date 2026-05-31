@@ -97,7 +97,7 @@
 
       <a href="#" class="forgot">Mot de passe oublié ?</a>
 
-      <button class="btn-submit">Se connecter</button>
+      <button class="btn-submit" onclick="connecter()">Se connecter</button>
 
       <div class="divider"><span>ou</span></div>
 
@@ -120,5 +120,45 @@
     <div class="footer-copy">© 2026 Axiora. Tous droits réservés.</div>
   </footer>
 
-</body>
+<script>
+  const API_URL = 'https://axiora-production.up.railway.app';
+
+  async function connecter() {
+    const email = document.querySelector('input[type="email"]').value.trim();
+    const password = document.querySelector('input[type="password"]').value;
+
+    if (!email || !password) {
+      alert('Veuillez remplir tous les champs !');
+      return;
+    }
+
+    const btn = document.querySelector('.btn-submit');
+    btn.textContent = 'Connexion en cours...';
+    btn.disabled = true;
+
+    try {
+      const response = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        localStorage.setItem('axiora_user', JSON.stringify(data.user));
+        localStorage.setItem('axiora_session', JSON.stringify(data.session));
+        window.location.href = '/dashboard';
+      } else {
+        alert('Erreur : ' + (data.error || 'Email ou mot de passe incorrect'));
+        btn.textContent = 'Se connecter';
+        btn.disabled = false;
+      }
+    } catch (err) {
+      alert('Erreur de connexion au serveur');
+      btn.textContent = 'Se connecter';
+      btn.disabled = false;
+    }
+  }
+</script></body>
 </html>
