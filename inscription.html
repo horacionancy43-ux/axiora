@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axiora — Créer un compte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0f0f0f; color: #f0f0f0; display: flex; flex-direction: column; min-height: 100vh; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px; border-bottom: 1px solid #1f1f1f; background: #0f0f0f;
+    }
+    .logo { font-size: 20px; font-weight: 600; color: #7F77DD; text-decoration: none; }
+    .logo span { color: #f0f0f0; }
+
+    .main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+    .card {
+      background: #141414; border: 1px solid #1f1f1f; border-radius: 16px;
+      padding: 36px; width: 100%; max-width: 460px;
+    }
+    .card-header { text-align: center; margin-bottom: 28px; }
+    .card-icon { font-size: 36px; margin-bottom: 12px; }
+    .card-header h1 { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .card-header p { font-size: 14px; color: #777; }
+
+    .steps { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 28px; }
+    .step { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
+    .step.active { background: #534AB7; color: #fff; }
+    .step.done { background: #1D9E75; color: #fff; }
+    .step.pending { background: #1f1f1f; color: #555; }
+    .step-line { flex: 1; height: 1px; background: #1f1f1f; max-width: 40px; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { font-size: 13px; color: #aaa; font-weight: 500; display: block; margin-bottom: 6px; }
+    .req { color: #7F77DD; }
+    .form-group input, .form-group select {
+      width: 100%; padding: 11px 14px; background: #0f0f0f;
+      border: 1px solid #2a2a2a; border-radius: 8px; color: #f0f0f0;
+      font-size: 14px; font-family: 'Inter', sans-serif; outline: none; transition: border-color .2s;
+    }
+    .form-group input:focus, .form-group select:focus { border-color: #534AB7; }
+    .form-group select option { background: #141414; }
+    .phone-row { display: flex; gap: 8px; }
+    .phone-prefix { width: 80px; }
+
+    .password-strength { margin-top: 6px; }
+    .strength-bar { height: 4px; background: #1f1f1f; border-radius: 99px; overflow: hidden; margin-bottom: 4px; }
+    .strength-fill { height: 100%; border-radius: 99px; width: 0%; transition: width .3s, background .3s; }
+    .strength-text { font-size: 11px; color: #555; }
+
+    .checkboxes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .check-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #999; line-height: 1.5; }
+    .check-item input[type=checkbox] { width: 16px; height: 16px; accent-color: #534AB7; flex-shrink: 0; margin-top: 2px; }
+    .check-item a { color: #7F77DD; text-decoration: none; }
+
+    .verif-box {
+      display: flex; align-items: center; gap: 12px; background: #141414;
+      border: 1px solid #2a2a2a; border-radius: 10px; padding: 12px 14px; margin-bottom: 16px;
+    }
+    .verif-icon { font-size: 20px; flex-shrink: 0; }
+    .verif-text strong { font-size: 13px; font-weight: 600; display: block; margin-bottom: 2px; }
+    .verif-text span { font-size: 12px; color: #777; }
+
+    .btn-submit {
+      width: 100%; padding: 12px; background: #534AB7; color: #fff; border: none;
+      border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: background .2s;
+    }
+    .btn-submit:hover { background: #6B62D4; }
+
+    .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #1f1f1f; }
+    .divider span { font-size: 12px; color: #555; }
+
+    .btn-discord {
+      width: 100%; padding: 11px; background: #5865F2; color: #fff; border: none;
+      border-radius: 10px; font-size: 14px; font-weight: 500; cursor: pointer;
+      font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+
+    .login-link { text-align: center; margin-top: 20px; font-size: 14px; color: #777; }
+    .login-link a { color: #7F77DD; text-decoration: none; font-weight: 500; }
+
+    .benefits {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px;
+    }
+    .benefit { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #999; }
+    .benefit::before { content: "✓"; color: #7F77DD; font-weight: 600; }
+
+    footer { padding: 20px 40px; text-align: center; border-top: 1px solid #1f1f1f; }
+    .footer-copy { font-size: 12px; color: #444; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="/" class="logo">Axio<span>ra</span></a>
+  </nav>
+
+  <div class="main">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-icon">🚀</div>
+        <h1>Créer un compte</h1>
+        <p>Rejoignez Axiora et accédez à tous nos services</p>
+      </div>
+
+      <div class="steps">
+        <div class="step active">1</div>
+        <div class="step-line"></div>
+        <div class="step pending">2</div>
+        <div class="step-line"></div>
+        <div class="step pending">3</div>
+      </div>
+
+      <div class="benefits">
+        <div class="benefit">Coffre-fort numérique</div>
+        <div class="benefit">Salon privé client</div>
+        <div class="benefit">Suivi de projets</div>
+        <div class="benefit">Factures automatiques</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Prénom <span class="req">*</span></label>
+          <input type="text" placeholder="Jean">
+        </div>
+        <div class="form-group">
+          <label>Nom <span class="req">*</span></label>
+          <input type="text" placeholder="Dupont">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Adresse e-mail <span class="req">*</span></label>
+        <input type="email" placeholder="jean.dupont@email.com">
+      </div>
+
+      <div class="form-group">
+        <label>Numéro de téléphone <span class="req">*</span></label>
+        <div class="phone-row">
+          <select class="phone-prefix">
+            <option>+33</option>
+            <option>+32</option>
+            <option>+41</option>
+            <option>+1</option>
+          </select>
+          <input type="tel" placeholder="06 12 34 56 78" style="flex:1">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Mot de passe <span class="req">*</span></label>
+        <input type="password" placeholder="Minimum 8 caractères" id="pwd">
+        <div class="password-strength">
+          <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+          <div class="strength-text" id="strength-text">Entrez un mot de passe</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Confirmer le mot de passe <span class="req">*</span></label>
+        <input type="password" placeholder="Répétez votre mot de passe">
+      </div>
+
+      <div class="form-group">
+        <label>Pays <span class="req">*</span></label>
+        <select>
+          <option>France</option>
+          <option selected>Belgique</option>
+          <option>Suisse</option>
+          <option>Canada</option>
+          <option>Autre</option>
+        </select>
+      </div>
+
+      <div class="checkboxes">
+        <div class="check-item">
+          <input type="checkbox">
+          <span>J'accepte les <a href="/contact">conditions générales d'utilisation</a> d'Axiora. <span class="req">*</span></span>
+        </div>
+        <div class="check-item">
+          <input type="checkbox">
+          <span>J'accepte la <a href="/apropos">politique de confidentialité</a> et le traitement de mes données. <span class="req">*</span></span>
+        </div>
+        <div class="check-item">
+          <input type="checkbox">
+          <span>Je souhaite recevoir les offres et nouveautés Axiora. (facultatif)</span>
+        </div>
+      </div>
+
+      <div class="verif-box">
+        <div class="verif-icon">📱</div>
+        <div class="verif-text">
+          <strong>Vérification par SMS</strong>
+          <span>Un code de confirmation vous sera envoyé par SMS après inscription.</span>
+        </div>
+      </div>
+
+      <button class="btn-submit">Créer mon compte →</button>
+
+      <div class="divider"><span>ou</span></div>
+
+      <button class="btn-discord">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.001.022.015.04.037.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Continuer avec Discord
+      </button>
+
+      <div class="login-link">
+        Déjà un compte ? <a href="/connexion">Se connecter</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-copy">© 2026 Axiora. Tous droits réservés.</div>
+  </footer>
+
+  <script>
+    const pwd = document.getElementById('pwd');
+    const fill = document.getElementById('strength-fill');
+    const text = document.getElementById('strength-text');
+    pwd.addEventListener('input', () => {
+      const v = pwd.value;
+      let score = 0;
+      if (v.length >= 8) score++;
+      if (/[A-Z]/.test(v)) score++;
+      if (/[0-9]/.test(v)) score++;
+      if (/[^A-Za-z0-9]/.test(v)) score++;
+      const levels = [
+        { w: '0%', c: '#E24B4A', t: 'Trop court' },
+        { w: '25%', c: '#E24B4A', t: 'Faible' },
+        { w: '50%', c: '#BA7517', t: 'Moyen' },
+        { w: '75%', c: '#7F77DD', t: 'Bon' },
+        { w: '100%', c: '#1D9E75', t: 'Excellent' }
+      ];
+      fill.style.width = levels[score].w;
+      fill.style.background = levels[score].c;
+      text.style.color = levels[score].c;
+      text.textContent = v.length === 0 ? 'Entrez un mot de passe' : levels[score].t;
+    });
+  </script>
+
+</body>
+</html>
