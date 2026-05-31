@@ -85,9 +85,10 @@
     .add-btn {
       padding: 7px 16px; background: #534AB7; color: #fff; border: none;
       border-radius: 8px; font-size: 12px; font-weight: 500; cursor: pointer;
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', sans-serif; transition: background .2s;
     }
     .add-btn:hover { background: #6B62D4; }
+    .add-btn:disabled { background: #333; cursor: not-allowed; }
 
     .custom-cta {
       background: #141414; border: 1px solid #1f1f1f; border-radius: 16px;
@@ -160,7 +161,7 @@
           <div class="prod-desc">Règlement prêt à l'emploi pour serveur Discord, personnalisable avec votre nom et logo.</div>
           <div class="prod-footer">
             <div class="prod-price">9,99 €</div>
-            <button class="add-btn">Acheter</button>
+            <button class="add-btn" onclick="acheter('Règlement Discord complet', 9.99)">Acheter</button>
           </div>
         </div>
       </div>
@@ -174,7 +175,7 @@
           <div class="prod-desc">Template complet pour restaurant : menu, réservation, galerie photos, contact.</div>
           <div class="prod-footer">
             <div><span class="prod-old">199 €</span><span class="prod-price">149,00 €</span></div>
-            <button class="add-btn">Acheter</button>
+            <button class="add-btn" onclick="acheter('Site vitrine Restaurant', 149)">Acheter</button>
           </div>
         </div>
       </div>
@@ -188,7 +189,7 @@
           <div class="prod-desc">Pack CGU + Politique RGPD conforme, adapté aux sites et applications web.</div>
           <div class="prod-footer">
             <div class="prod-price">19,99 €</div>
-            <button class="add-btn">Acheter</button>
+            <button class="add-btn" onclick="acheter('CGU + Politique de confidentialité', 19.99)">Acheter</button>
           </div>
         </div>
       </div>
@@ -207,7 +208,7 @@
           <div class="prod-desc">Règlement professionnel adapté aux serveurs de jeu roleplay ou survie.</div>
           <div class="prod-footer">
             <div class="prod-price">14,99 €</div>
-            <button class="add-btn">Acheter</button>
+            <button class="add-btn" onclick="acheter('Règlement serveur de jeu FiveM Minecraft', 14.99)">Acheter</button>
           </div>
         </div>
       </div>
@@ -221,7 +222,7 @@
           <div class="prod-desc">Présence web claire et élégante pour artisan, photographe ou consultant.</div>
           <div class="prod-footer">
             <div class="prod-price">129,00 €</div>
-            <button class="add-btn">Acheter</button>
+            <button class="add-btn" onclick="acheter('Site vitrine Artisan Freelance', 129)">Acheter</button>
           </div>
         </div>
       </div>
@@ -235,7 +236,7 @@
           <div class="prod-desc">Guide complet : VPN, mots de passe, 2FA, bonnes pratiques pour protéger vos données.</div>
           <div class="prod-footer">
             <div class="prod-price">7,99 €</div>
-            <button class="add-btn">Acheter</button>
+            <button class="add-btn" onclick="acheter('Guide sécurité numérique personnel', 7.99)">Acheter</button>
           </div>
         </div>
       </div>
@@ -249,7 +250,7 @@
           <div class="prod-desc">Règlement intérieur professionnel conforme au droit du travail français.</div>
           <div class="prod-footer">
             <div class="prod-price">29,99 €</div>
-            <button class="add-btn">Acheter</button>
+            <button class="add-btn" onclick="acheter('Règlement intérieur entreprise', 29.99)">Acheter</button>
           </div>
         </div>
       </div>
@@ -263,7 +264,7 @@
           <div class="prod-desc">Site vitrine + CGU + Politique de confidentialité + Guide sécurité. Tout pour démarrer.</div>
           <div class="prod-footer">
             <div><span class="prod-old">197 €</span><span class="prod-price">149,00 €</span></div>
-            <button class="add-btn">Acheter</button>
+            <button class="add-btn" onclick="acheter('Pack démarrage web complet', 149)">Acheter</button>
           </div>
         </div>
       </div>
@@ -277,7 +278,7 @@
           <div class="prod-desc">Template propre pour association, club sportif ou organisation d'événement.</div>
           <div class="prod-footer">
             <div class="prod-price">89,00 €</div>
-            <button class="add-btn">Acheter</button>
+            <button class="add-btn" onclick="acheter('Site vitrine Association Événement', 89)">Acheter</button>
           </div>
         </div>
       </div>
@@ -302,8 +303,43 @@
       <a href="/">Remboursement</a>
       <a href="/contact">Contact</a>
     </div>
-    <div class="footer-copy">© 2025 Axiora. Tous droits réservés.</div>
+    <div class="footer-copy">© 2026 Axiora. Tous droits réservés.</div>
   </footer>
+
+  <script>
+    const API_URL = 'https://axiora-production.up.railway.app';
+
+    async function acheter(productName, amount) {
+      const email = prompt('Entrez votre adresse email pour continuer :');
+      if (!email) return;
+
+      const btn = event.target;
+      btn.textContent = 'Chargement...';
+      btn.disabled = true;
+
+      try {
+        const response = await fetch(`${API_URL}/create-payment`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount, productName, email })
+        });
+
+        const data = await response.json();
+
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          alert('Erreur : ' + (data.error || 'Impossible de créer le paiement'));
+          btn.textContent = 'Acheter';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        alert('Erreur de connexion au serveur');
+        btn.textContent = 'Acheter';
+        btn.disabled = false;
+      }
+    }
+  </script>
 
 </body>
 </html>
