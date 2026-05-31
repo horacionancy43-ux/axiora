@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axiora — Mon espace client</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #f0f0f0; display: flex; min-height: 100vh; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 240px; background: #0f0f0f; border-right: 1px solid #1f1f1f;
+      display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 10;
+    }
+    .sidebar-logo { padding: 20px 24px; border-bottom: 1px solid #1f1f1f; }
+    .logo { font-size: 18px; font-weight: 600; color: #7F77DD; text-decoration: none; }
+    .logo span { color: #f0f0f0; }
+    .sidebar-user { padding: 16px 24px; border-bottom: 1px solid #1f1f1f; display: flex; align-items: center; gap: 10px; }
+    .user-av { width: 36px; height: 36px; border-radius: 50%; background: #1a1830; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #9D96E8; flex-shrink: 0; }
+    .user-name { font-size: 13px; font-weight: 500; }
+    .user-plan { font-size: 11px; color: #7F77DD; }
+    .sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+    .nav-section { padding: 6px 24px 4px; font-size: 10px; font-weight: 600; color: #444; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 24px; font-size: 13px; color: #777; cursor: pointer; transition: all .2s; text-decoration: none; }
+    .nav-item:hover { color: #f0f0f0; background: #141414; }
+    .nav-item.active { color: #f0f0f0; background: #1a1830; border-right: 2px solid #534AB7; }
+    .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+    .nav-badge { margin-left: auto; background: #534AB7; color: #fff; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px; }
+    .sidebar-footer { padding: 16px 24px; border-top: 1px solid #1f1f1f; }
+    .logout-btn { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; cursor: pointer; text-decoration: none; transition: color .2s; }
+    .logout-btn:hover { color: #f0f0f0; }
+
+    /* MAIN */
+    .main { margin-left: 240px; flex: 1; padding: 32px; }
+    .page-header { margin-bottom: 28px; }
+    .page-header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+    .page-header p { font-size: 14px; color: #777; }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
+    .stat-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 18px; }
+    .stat-label { font-size: 12px; color: #777; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .stat-value { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
+    .stat-sub { font-size: 12px; color: #555; }
+    .stat-card.highlight { border-color: #2e2a5e; background: #1a1830; }
+    .stat-card.highlight .stat-value { color: #7F77DD; }
+
+    /* PROJETS */
+    .section { margin-bottom: 28px; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .section-header h2 { font-size: 15px; font-weight: 600; }
+    .section-link { font-size: 13px; color: #7F77DD; text-decoration: none; }
+
+    .project-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 18px; margin-bottom: 12px; }
+    .project-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+    .project-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+    .project-type { font-size: 12px; color: #777; }
+    .project-status { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 99px; }
+    .status-progress { background: #1a1830; color: #9D96E8; border: 1px solid #2e2a5e; }
+    .status-done { background: #0a2218; color: #4ade80; border: 1px solid #0f3a28; }
+    .status-review { background: #2a1800; color: #f0a500; border: 1px solid #3a2200; }
+    .progress-bar { height: 6px; background: #1f1f1f; border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+    .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #534AB7, #7F77DD); transition: width .3s; }
+    .progress-info { display: flex; justify-content: space-between; font-size: 12px; color: #555; }
+
+    /* COFFRE FORT */
+    .vault-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 18px; }
+    .vault-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .vault-icon { font-size: 24px; }
+    .vault-title { font-size: 14px; font-weight: 500; }
+    .vault-sub { font-size: 12px; color: #777; }
+    .storage-bar { height: 8px; background: #1f1f1f; border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
+    .storage-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #534AB7, #9D96E8); width: 23%; }
+    .storage-info { display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-bottom: 16px; }
+    .files-list { display: flex; flex-direction: column; gap: 8px; }
+    .file-item { display: flex; align-items: center; gap: 10px; padding: 10px; background: #0f0f0f; border-radius: 8px; }
+    .file-icon { font-size: 18px; flex-shrink: 0; }
+    .file-name { font-size: 13px; font-weight: 500; flex: 1; }
+    .file-size { font-size: 11px; color: #555; }
+    .file-date { font-size: 11px; color: #555; margin-right: 8px; }
+    .file-dl { font-size: 12px; color: #7F77DD; cursor: pointer; text-decoration: none; }
+
+    /* CHAT PRIVE */
+    .chat-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; overflow: hidden; }
+    .chat-header { padding: 14px 18px; border-bottom: 1px solid #1f1f1f; display: flex; align-items: center; gap: 10px; }
+    .chat-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; }
+    .chat-title { font-size: 14px; font-weight: 500; }
+    .chat-sub { font-size: 12px; color: #555; margin-left: auto; }
+    .chat-messages { padding: 16px; display: flex; flex-direction: column; gap: 12px; max-height: 280px; overflow-y: auto; }
+    .msg { display: flex; gap: 10px; }
+    .msg.mine { flex-direction: row-reverse; }
+    .msg-av { width: 28px; height: 28px; border-radius: 50%; background: #1a1830; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #9D96E8; flex-shrink: 0; }
+    .msg-av.support { background: #534AB7; color: #fff; }
+    .msg-bubble { max-width: 75%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.5; }
+    .msg .msg-bubble { background: #1f1f1f; color: #ccc; border-radius: 4px 12px 12px 12px; }
+    .msg.mine .msg-bubble { background: #534AB7; color: #fff; border-radius: 12px 4px 12px 12px; }
+    .msg-time { font-size: 10px; color: #444; margin-top: 4px; }
+    .chat-input { padding: 12px 16px; border-top: 1px solid #1f1f1f; display: flex; gap: 8px; }
+    .chat-input input { flex: 1; padding: 9px 14px; background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 8px; color: #f0f0f0; font-size: 13px; font-family: 'Inter', sans-serif; outline: none; }
+    .chat-input input:focus { border-color: #534AB7; }
+    .send-btn { padding: 9px 16px; background: #534AB7; color: #fff; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
+
+    /* FACTURES */
+    .invoice-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #0f0f0f; border-radius: 8px; margin-bottom: 8px; }
+    .invoice-icon { font-size: 18px; flex-shrink: 0; }
+    .invoice-name { font-size: 13px; font-weight: 500; flex: 1; }
+    .invoice-amount { font-size: 13px; color: #7F77DD; font-weight: 500; margin-right: 12px; }
+    .invoice-status { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 99px; background: #0a2218; color: #4ade80; border: 1px solid #0f3a28; }
+    .invoice-dl { font-size: 12px; color: #7F77DD; cursor: pointer; }
+
+    /* NOTES */
+    .notes-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 18px; }
+    .notes-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+    .notes-card p { font-size: 12px; color: #555; margin-bottom: 12px; }
+    .notes-card textarea { width: 100%; padding: 10px 14px; background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 8px; color: #f0f0f0; font-size: 13px; font-family: 'Inter', sans-serif; outline: none; min-height: 80px; resize: vertical; line-height: 1.6; }
+    .notes-card textarea:focus { border-color: #534AB7; }
+    .notes-save { margin-top: 8px; padding: 8px 16px; background: #534AB7; color: #fff; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <a href="/" class="logo">Axio<span>ra</span></a>
+    </div>
+    <div class="sidebar-user">
+      <div class="user-av">H</div>
+      <div>
+        <div class="user-name">Horacio</div>
+        <div class="user-plan">⭐ Plan Pro</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Principal</div>
+      <a href="#" class="nav-item active"><span class="icon">🏠</span> Tableau de bord</a>
+      <a href="#" class="nav-item"><span class="icon">📦</span> Mes commandes <span class="nav-badge">2</span></a>
+      <a href="#" class="nav-item"><span class="icon">📈</span> Suivi projets</a>
+      <div class="nav-section">Espace</div>
+      <a href="#" class="nav-item"><span class="icon">🗄️</span> Coffre-fort</a>
+      <a href="#" class="nav-item"><span class="icon">💬</span> Salon privé <span class="nav-badge">1</span></a>
+      <a href="#" class="nav-item"><span class="icon">📄</span> Factures</a>
+      <a href="#" class="nav-item"><span class="icon">📝</span> Mes notes</a>
+      <div class="nav-section">Compte</div>
+      <a href="#" class="nav-item"><span class="icon">👤</span> Mon profil</a>
+      <a href="#" class="nav-item"><span class="icon">💳</span> Abonnement</a>
+      <a href="#" class="nav-item"><span class="icon">🔔</span> Notifications</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="/" class="logout-btn">⬅️ Retour au site</a>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="page-header">
+      <h1>Bonjour Horacio 👋</h1>
+      <p>Voici un aperçu de votre espace client Axiora.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+      <div class="stat-card highlight">
+        <div class="stat-label">🗄️ Coffre-fort</div>
+        <div class="stat-value">2,3 GB</div>
+        <div class="stat-sub">sur 50 GB utilisés</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">📦 Commandes</div>
+        <div class="stat-value">4</div>
+        <div class="stat-sub">dont 2 en cours</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">💰 Total dépensé</div>
+        <div class="stat-value">89 €</div>
+        <div class="stat-sub">depuis le début</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">⭐ Plan actuel</div>
+        <div class="stat-value" style="font-size:16px;margin-top:4px">Pro</div>
+        <div class="stat-sub">Renouvellement le 01/07</div>
+      </div>
+    </div>
+
+    <!-- PROJETS EN COURS -->
+    <div class="section">
+      <div class="section-header">
+        <h2>📈 Projets en cours</h2>
+        <a href="#" class="section-link">Voir tout →</a>
+      </div>
+      <div class="project-card">
+        <div class="project-top">
+          <div>
+            <div class="project-name">Site vitrine — Boulangerie Martin</div>
+            <div class="project-type">Création de site web · Commande #1042</div>
+          </div>
+          <span class="project-status status-progress">En cours</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
+        <div class="progress-info"><span>Design validé · Intégration en cours</span><span>65%</span></div>
+      </div>
+      <div class="project-card">
+        <div class="project-top">
+          <div>
+            <div class="project-name">Règlement serveur Discord</div>
+            <div class="project-type">Règlement · Commande #1039</div>
+          </div>
+          <span class="project-status status-review">En révision</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
+        <div class="progress-info"><span>En attente de votre validation</span><span>90%</span></div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+
+      <!-- COFFRE FORT -->
+      <div class="section">
+        <div class="section-header"><h2>🗄️ Coffre-fort numérique</h2><a href="#" class="section-link">Gérer →</a></div>
+        <div class="vault-card">
+          <div class="storage-bar"><div class="storage-fill"></div></div>
+          <div class="storage-info"><span>2,3 GB utilisés</span><span>50 GB disponibles</span></div>
+          <div class="files-list">
+            <div class="file-item">
+              <span class="file-icon">📄</span>
+              <span class="file-name">Règlement_Discord_v2.pdf</span>
+              <span class="file-size">245 KB</span>
+              <span class="file-date">12/05</span>
+              <a href="#" class="file-dl">⬇</a>
+            </div>
+            <div class="file-item">
+              <span class="file-icon">🌐</span>
+              <span class="file-name">Site_vitrine_preview.zip</span>
+              <span class="file-size">1,8 MB</span>
+              <span class="file-date">18/05</span>
+              <a href="#" class="file-dl">⬇</a>
+            </div>
+            <div class="file-item">
+              <span class="file-icon">📋</span>
+              <span class="file-name">Facture_001_Axiora.pdf</span>
+              <span class="file-size">89 KB</span>
+              <span class="file-date">01/05</span>
+              <a href="#" class="file-dl">⬇</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FACTURES -->
+      <div class="section">
+        <div class="section-header"><h2>📄 Dernières factures</h2><a href="#" class="section-link">Tout voir →</a></div>
+        <div style="background:#141414;border:1px solid #1f1f1f;border-radius:12px;padding:16px;">
+          <div class="invoice-item">
+            <span class="invoice-icon">🧾</span>
+            <span class="invoice-name">Règlement Discord</span>
+            <span class="invoice-amount">9,99 €</span>
+            <span class="invoice-status">Payée</span>
+          </div>
+          <div class="invoice-item">
+            <span class="invoice-icon">🧾</span>
+            <span class="invoice-name">Abonnement Pro — Mai</span>
+            <span class="invoice-amount">12,99 €</span>
+            <span class="invoice-status">Payée</span>
+          </div>
+          <div class="invoice-item">
+            <span class="invoice-icon">🧾</span>
+            <span class="invoice-name">Site vitrine — Acompte</span>
+            <span class="invoice-amount">50,00 €</span>
+            <span class="invoice-status">Payée</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="grid-2">
+
+      <!-- SALON PRIVE -->
+      <div class="section">
+        <div class="section-header"><h2>💬 Salon privé</h2></div>
+        <div class="chat-card">
+          <div class="chat-header">
+            <div class="chat-dot"></div>
+            <span class="chat-title">Support Axiora</span>
+            <span class="chat-sub">En ligne</span>
+          </div>
+          <div class="chat-messages">
+            <div class="msg">
+              <div class="msg-av support">A</div>
+              <div>
+                <div class="msg-bubble">Bonjour Horacio ! Votre règlement Discord est en cours de révision finale. Vous devriez le recevoir d'ici 24h.</div>
+                <div class="msg-time">Hier 14:32</div>
+              </div>
+            </div>
+            <div class="msg mine">
+              <div class="msg-av">H</div>
+              <div>
+                <div class="msg-bubble">Super merci ! Est-ce que je peux encore modifier quelques points ?</div>
+                <div class="msg-time">Hier 15:01</div>
+              </div>
+            </div>
+            <div class="msg">
+              <div class="msg-av support">A</div>
+              <div>
+                <div class="msg-bubble">Bien sûr, pas de problème ! Dites-moi ce que vous souhaitez modifier.</div>
+                <div class="msg-time">Hier 15:08</div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input">
+            <input type="text" placeholder="Écrire un message…">
+            <button class="send-btn">Envoyer</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTES PRIVEES -->
+      <div class="section">
+        <div class="section-header"><h2>📝 Mes notes privées</h2></div>
+        <div class="notes-card">
+          <h3>Notes personnelles</h3>
+          <p>Visibles uniquement par vous et le support.</p>
+          <textarea placeholder="Ajoutez vos notes ici…">- Demander à modifier la section sanctions du règlement
+- Vérifier la date de livraison du site vitrine
+- Penser à upgrader vers Premium en juillet</textarea>
+          <button class="notes-save">Sauvegarder</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>
