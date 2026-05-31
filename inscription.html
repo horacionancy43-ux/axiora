@@ -19,19 +19,22 @@
     .main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
     .card {
       background: #141414; border: 1px solid #1f1f1f; border-radius: 16px;
-      padding: 36px; width: 100%; max-width: 460px;
+      padding: 36px; width: 100%; max-width: 480px;
     }
-    .card-header { text-align: center; margin-bottom: 28px; }
+    .card-header { text-align: center; margin-bottom: 24px; }
     .card-icon { font-size: 36px; margin-bottom: 12px; }
     .card-header h1 { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
     .card-header p { font-size: 14px; color: #777; }
 
-    .steps { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 28px; }
+    .steps { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 24px; }
     .step { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; }
     .step.active { background: #534AB7; color: #fff; }
-    .step.done { background: #1D9E75; color: #fff; }
     .step.pending { background: #1f1f1f; color: #555; }
     .step-line { flex: 1; height: 1px; background: #1f1f1f; max-width: 40px; }
+
+    .benefits { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+    .benefit { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #999; }
+    .benefit::before { content: "✓"; color: #7F77DD; font-weight: 600; }
 
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .form-group { margin-bottom: 14px; }
@@ -40,12 +43,26 @@
     .form-group input, .form-group select {
       width: 100%; padding: 11px 14px; background: #0f0f0f;
       border: 1px solid #2a2a2a; border-radius: 8px; color: #f0f0f0;
-      font-size: 14px; font-family: 'Inter', sans-serif; outline: none; transition: border-color .2s;
+      font-size: 13px; font-family: 'Inter', sans-serif; outline: none; transition: border-color .2s;
     }
     .form-group input:focus, .form-group select:focus { border-color: #534AB7; }
     .form-group select option { background: #141414; }
-    .phone-row { display: flex; gap: 8px; }
-    .phone-prefix { width: 75px; flex-shrink: 0; font-size: 13px; }
+
+    .phone-group { display: flex; gap: 8px; align-items: stretch; }
+    .phone-group select {
+      width: 100px; flex-shrink: 0; padding: 11px 10px;
+      background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 8px;
+      color: #f0f0f0; font-size: 13px; font-family: 'Inter', sans-serif;
+      outline: none; transition: border-color .2s; cursor: pointer;
+    }
+    .phone-group select:focus { border-color: #534AB7; }
+    .phone-group input {
+      flex: 1; padding: 11px 14px; background: #0f0f0f;
+      border: 1px solid #2a2a2a; border-radius: 8px; color: #f0f0f0;
+      font-size: 13px; font-family: 'Inter', sans-serif; outline: none;
+      transition: border-color .2s; min-width: 0;
+    }
+    .phone-group input:focus { border-color: #534AB7; }
 
     .password-strength { margin-top: 6px; }
     .strength-bar { height: 4px; background: #1f1f1f; border-radius: 99px; overflow: hidden; margin-bottom: 4px; }
@@ -71,6 +88,7 @@
       font-family: 'Inter', sans-serif; transition: background .2s;
     }
     .btn-submit:hover { background: #6B62D4; }
+    .btn-submit:disabled { background: #333; cursor: not-allowed; }
 
     .divider { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
     .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: #1f1f1f; }
@@ -84,12 +102,6 @@
 
     .login-link { text-align: center; margin-top: 20px; font-size: 14px; color: #777; }
     .login-link a { color: #7F77DD; text-decoration: none; font-weight: 500; }
-
-    .benefits {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px;
-    }
-    .benefit { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #999; }
-    .benefit::before { content: "✓"; color: #7F77DD; font-weight: 600; }
 
     footer { padding: 20px 40px; text-align: center; border-top: 1px solid #1f1f1f; }
     .footer-copy { font-size: 12px; color: #444; }
@@ -127,29 +139,30 @@
       <div class="form-row">
         <div class="form-group">
           <label>Prénom <span class="req">*</span></label>
-          <input type="text" placeholder="Jean">
+          <input type="text" id="prenom" placeholder="Jean">
         </div>
         <div class="form-group">
           <label>Nom <span class="req">*</span></label>
-          <input type="text" placeholder="Dupont">
+          <input type="text" id="nom" placeholder="Dupont">
         </div>
       </div>
 
       <div class="form-group">
         <label>Adresse e-mail <span class="req">*</span></label>
-        <input type="email" placeholder="jean.dupont@email.com">
+        <input type="email" id="email" placeholder="jean.dupont@email.com">
       </div>
 
       <div class="form-group">
         <label>Numéro de téléphone <span class="req">*</span></label>
-        <div class="phone-row">
-          <select class="phone-prefix">
-            <option>+33</option>
-            <option>+32</option>
-            <option>+41</option>
-            <option>+1</option>
+        <div class="phone-group">
+          <select id="indicatif">
+            <option value="+33">🇫🇷 +33</option>
+            <option value="+32">🇧🇪 +32</option>
+            <option value="+41">🇨🇭 +41</option>
+            <option value="+1">🇨🇦 +1</option>
+            <option value="+44">🇬🇧 +44</option>
           </select>
-          <input type="tel" placeholder="06 12 34 56 78" style="flex:1;">
+          <input type="tel" id="telephone" placeholder="6 12 34 56 78">
         </div>
       </div>
 
@@ -164,12 +177,12 @@
 
       <div class="form-group">
         <label>Confirmer le mot de passe <span class="req">*</span></label>
-        <input type="password" placeholder="Répétez votre mot de passe">
+        <input type="password" id="pwd-confirm" placeholder="Répétez votre mot de passe">
       </div>
 
       <div class="form-group">
         <label>Pays <span class="req">*</span></label>
-        <select>
+        <select id="pays">
           <option>France</option>
           <option selected>Belgique</option>
           <option>Suisse</option>
@@ -180,11 +193,11 @@
 
       <div class="checkboxes">
         <div class="check-item">
-          <input type="checkbox">
+          <input type="checkbox" id="cgu">
           <span>J'accepte les <a href="/contact">conditions générales d'utilisation</a> d'Axiora. <span class="req">*</span></span>
         </div>
         <div class="check-item">
-          <input type="checkbox">
+          <input type="checkbox" id="rgpd">
           <span>J'accepte la <a href="/apropos">politique de confidentialité</a> et le traitement de mes données. <span class="req">*</span></span>
         </div>
         <div class="check-item">
@@ -221,9 +234,12 @@
   </footer>
 
   <script>
+    const API_URL = 'https://axiora-production.up.railway.app';
+
     const pwd = document.getElementById('pwd');
     const fill = document.getElementById('strength-fill');
     const text = document.getElementById('strength-text');
+
     pwd.addEventListener('input', () => {
       const v = pwd.value;
       let score = 0;
@@ -243,55 +259,65 @@
       text.style.color = levels[score].c;
       text.textContent = v.length === 0 ? 'Entrez un mot de passe' : levels[score].t;
     });
-  </script>
 
-<script>
-  const API_URL = 'https://axiora-production.up.railway.app';
+    async function inscrire() {
+      const prenom = document.getElementById('prenom').value.trim();
+      const nom = document.getElementById('nom').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const indicatif = document.getElementById('indicatif').value;
+      const tel = document.getElementById('telephone').value.trim();
+      const telephone = indicatif + tel;
+      const password = document.getElementById('pwd').value;
+      const passwordConfirm = document.getElementById('pwd-confirm').value;
+      const pays = document.getElementById('pays').value;
+      const cgu = document.getElementById('cgu').checked;
+      const rgpd = document.getElementById('rgpd').checked;
 
-  async function inscrire() {
-    const prenom = document.querySelector('input[placeholder="Jean"]').value;
-    const nom = document.querySelector('input[placeholder="Dupont"]').value;
-    const email = document.querySelector('input[type="email"]').value;
-    const telephone = document.querySelector('input[type="tel"]').value;
-    const password = document.getElementById('pwd').value;
-    const pays = document.querySelector('select').value;
+      if (!prenom || !nom || !email || !tel || !password) {
+        alert('Veuillez remplir tous les champs obligatoires !');
+        return;
+      }
+      if (password !== passwordConfirm) {
+        alert('Les mots de passe ne correspondent pas !');
+        return;
+      }
+      if (password.length < 8) {
+        alert('Le mot de passe doit contenir au moins 8 caractères !');
+        return;
+      }
+      if (!cgu || !rgpd) {
+        alert('Vous devez accepter les conditions générales et la politique de confidentialité !');
+        return;
+      }
 
-    if (!prenom || !nom || !email || !password) {
-      alert('Veuillez remplir tous les champs obligatoires !');
-      return;
-    }
+      const btn = document.querySelector('.btn-submit');
+      btn.textContent = 'Création en cours...';
+      btn.disabled = true;
 
-    if (password.length < 8) {
-      alert('Le mot de passe doit contenir au moins 8 caractères !');
-      return;
-    }
+      try {
+        const response = await fetch(`${API_URL}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prenom, nom, email, password, telephone, pays })
+        });
 
-    const btn = document.querySelector('.btn-submit');
-    btn.textContent = 'Création en cours...';
-    btn.disabled = true;
+        const data = await response.json();
 
-    try {
-      const response = await fetch(`${API_URL}/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ prenom, nom, email, password, telephone, pays })
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        alert('✅ Compte créé avec succès ! Vérifiez votre email pour confirmer votre compte.');
-        window.location.href = '/connexion';
-      } else {
-        alert('Erreur : ' + (data.error || 'Impossible de créer le compte'));
+        if (data.success) {
+          alert('✅ Compte créé ! Vérifiez votre email pour confirmer votre inscription.');
+          window.location.href = '/connexion';
+        } else {
+          alert('Erreur : ' + (data.error || 'Impossible de créer le compte'));
+          btn.textContent = 'Créer mon compte →';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        alert('Erreur de connexion au serveur');
         btn.textContent = 'Créer mon compte →';
         btn.disabled = false;
       }
-    } catch (err) {
-      alert('Erreur de connexion au serveur');
-      btn.textContent = 'Créer mon compte →';
-      btn.disabled = false;
     }
-  }
-</script>h</body>
+  </script>
+
+</body>
 </html>
