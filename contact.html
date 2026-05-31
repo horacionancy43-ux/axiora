@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axiora — Contact & Devis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0f0f0f; color: #f0f0f0; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px; border-bottom: 1px solid #1f1f1f;
+      background: #0f0f0f; position: sticky; top: 0; z-index: 100;
+    }
+    .logo { font-size: 20px; font-weight: 600; color: #7F77DD; text-decoration: none; }
+    .logo span { color: #f0f0f0; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { text-decoration: none; color: #aaa; font-size: 14px; transition: color .2s; }
+    .nav-links a:hover { color: #f0f0f0; }
+    .nav-links a.active { color: #7F77DD; font-weight: 500; }
+    .nav-btns { display: flex; gap: 10px; }
+    .btn-ghost { padding: 8px 18px; border: 1px solid #333; border-radius: 8px; background: transparent; color: #f0f0f0; font-size: 13px; cursor: pointer; }
+    .btn-primary { padding: 8px 18px; border: none; border-radius: 8px; background: #534AB7; color: #fff; font-size: 13px; cursor: pointer; font-weight: 500; }
+
+    .page-hero {
+      padding: 60px 40px 40px; border-bottom: 1px solid #1f1f1f;
+      background: radial-gradient(ellipse at top, #1a1830 0%, #0f0f0f 60%);
+    }
+    .page-hero h1 { font-size: 38px; font-weight: 600; margin-bottom: 8px; }
+    .page-hero p { font-size: 15px; color: #999; max-width: 520px; line-height: 1.7; }
+
+    .layout {
+      display: grid; grid-template-columns: 1fr 340px;
+      min-height: 600px;
+    }
+    .form-col { padding: 40px; border-right: 1px solid #1f1f1f; }
+    .info-col { padding: 36px; background: #0d0d0d; }
+
+    .form-section { margin-bottom: 28px; }
+    .form-section h3 {
+      font-size: 14px; font-weight: 600; margin-bottom: 16px;
+      padding-bottom: 10px; border-bottom: 1px solid #1f1f1f;
+      display: flex; align-items: center; gap: 8px; color: #f0f0f0;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+    .form-group label { font-size: 12px; color: #aaa; font-weight: 500; }
+    .req { color: #7F77DD; margin-left: 2px; }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 10px 14px; background: #141414; border: 1px solid #2a2a2a;
+      border-radius: 8px; color: #f0f0f0; font-size: 13px;
+      font-family: 'Inter', sans-serif; outline: none; transition: border-color .2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #534AB7; }
+    .form-group textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
+    .form-group select option { background: #141414; }
+    .phone-row { display: flex; gap: 8px; }
+    .phone-prefix { width: 80px; }
+
+    .checkboxes { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .check-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #999; line-height: 1.5; }
+    .check-item input[type=checkbox] { width: 16px; height: 16px; accent-color: #534AB7; flex-shrink: 0; margin-top: 2px; cursor: pointer; }
+    .check-item a { color: #7F77DD; text-decoration: none; }
+
+    .verif-box {
+      display: flex; align-items: center; gap: 12px; background: #141414;
+      border: 1px solid #2a2a2a; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px;
+    }
+    .verif-box .icon { font-size: 22px; flex-shrink: 0; }
+    .verif-box strong { font-size: 13px; font-weight: 600; display: block; margin-bottom: 3px; }
+    .verif-box span { font-size: 12px; color: #777; }
+
+    .gdpr-note {
+      display: flex; align-items: flex-start; gap: 10px; background: #1a1830;
+      border: 1px solid #2e2a5e; border-radius: 8px; padding: 12px 14px;
+      font-size: 12px; color: #9D96E8; line-height: 1.6; margin-bottom: 20px;
+    }
+
+    .submit-btn {
+      width: 100%; padding: 13px; background: #534AB7; color: #fff; border: none;
+      border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer;
+      font-family: 'Inter', sans-serif; transition: background .2s;
+    }
+    .submit-btn:hover { background: #6B62D4; }
+    .delay-note { font-size: 12px; color: #555; text-align: center; margin-top: 10px; }
+
+    .info-block { margin-bottom: 28px; }
+    .info-block h4 { font-size: 13px; font-weight: 600; margin-bottom: 12px; color: #f0f0f0; display: flex; align-items: center; gap: 7px; }
+    .info-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: #777; margin-bottom: 10px; line-height: 1.5; }
+    .info-item .icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    .step-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+    .step-num { width: 24px; height: 24px; border-radius: 50%; background: #1a1830; border: 1px solid #2e2a5e; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #9D96E8; flex-shrink: 0; margin-top: 1px; }
+    .step-text strong { font-size: 13px; font-weight: 500; display: block; margin-bottom: 2px; color: #f0f0f0; }
+    .step-text span { font-size: 12px; color: #777; }
+
+    .faq-item { margin-bottom: 14px; }
+    .faq-q { font-size: 13px; font-weight: 500; margin-bottom: 4px; color: #f0f0f0; }
+    .faq-a { font-size: 12px; color: #777; line-height: 1.6; }
+
+    .divider { height: 1px; background: #1f1f1f; margin: 20px 0; }
+
+    footer { padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1f1f1f; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: #555; text-decoration: none; }
+    .footer-copy { font-size: 12px; color: #444; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">Axio<span>ra</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="boutique.html">Boutique</a></li>
+      <li><a href="abonnements.html">Abonnements</a></li>
+      <li><a href="avis.html">Avis</a></li>
+      <li><a href="apropos.html">À propos</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+    </ul>
+    <div class="nav-btns">
+      <button class="btn-ghost">Connexion</button>
+      <button class="btn-primary">Créer un compte</button>
+    </div>
+  </nav>
+
+  <div class="page-hero">
+    <h1>Contact & Devis</h1>
+    <p>Vous avez un projet sur mesure ? Remplissez le formulaire, notre équipe vous répond sous 72h maximum.</p>
+  </div>
+
+  <div class="layout">
+
+    <div class="form-col">
+
+      <div class="form-section">
+        <h3>👤 Vos informations personnelles</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Prénom <span class="req">*</span></label>
+            <input type="text" placeholder="Jean">
+          </div>
+          <div class="form-group">
+            <label>Nom <span class="req">*</span></label>
+            <input type="text" placeholder="Dupont">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Adresse e-mail <span class="req">*</span></label>
+          <input type="email" placeholder="jean.dupont@email.com">
+        </div>
+        <div class="form-group">
+          <label>Numéro de téléphone <span class="req">*</span></label>
+          <div class="phone-row">
+            <select class="phone-prefix">
+              <option>+33</option>
+              <option>+32</option>
+              <option>+41</option>
+              <option>+1</option>
+            </select>
+            <input type="tel" placeholder="06 12 34 56 78" style="flex:1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Ville</label>
+            <input type="text" placeholder="Paris">
+          </div>
+          <div class="form-group">
+            <label>Pays <span class="req">*</span></label>
+            <select>
+              <option>France</option>
+              <option>Belgique</option>
+              <option>Suisse</option>
+              <option>Canada</option>
+              <option>Autre</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>✨ Votre projet</h3>
+        <div class="form-group">
+          <label>Type de service souhaité <span class="req">*</span></label>
+          <select>
+            <option value="">Sélectionner…</option>
+            <option>Création de site web</option>
+            <option>Règlement professionnel</option>
+            <option>Document légal (CGU, politique…)</option>
+            <option>Code sur mesure</option>
+            <option>Sécurité / protection données</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nom de votre projet / entreprise</label>
+          <input type="text" placeholder="Ex : Boulangerie Martin, ServeurGaming…">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Budget estimé</label>
+            <select>
+              <option>Non défini</option>
+              <option>Moins de 50 €</option>
+              <option>50 € – 200 €</option>
+              <option>200 € – 500 €</option>
+              <option>500 € – 1 000 €</option>
+              <option>Plus de 1 000 €</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Délai souhaité</label>
+            <select>
+              <option>Pas de contrainte</option>
+              <option>Urgent (moins d'1 semaine)</option>
+              <option>2 à 4 semaines</option>
+              <option>1 à 2 mois</option>
+              <option>Plus de 2 mois</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description du projet <span class="req">*</span></label>
+          <textarea placeholder="Décrivez votre projet en détail : objectifs, fonctionnalités souhaitées, références visuelles, contraintes particulières…"></textarea>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3>🔒 Vérification & consentement</h3>
+        <div class="checkboxes">
+          <div class="check-item">
+            <input type="checkbox">
+            <span>J'accepte les <a href="#">conditions générales d'utilisation</a> d'Axiora.</span>
+          </div>
+          <div class="check-item">
+            <input type="checkbox">
+            <span>J'accepte la <a href="#">politique de confidentialité</a> et le traitement de mes données personnelles.</span>
+          </div>
+          <div class="check-item">
+            <input type="checkbox">
+            <span>Je souhaite recevoir des informations sur les offres Axiora. (facultatif)</span>
+          </div>
+        </div>
+
+        <div class="verif-box">
+          <div class="icon">📱</div>
+          <div>
+            <strong>Vérification par SMS requise</strong>
+            <span>Après envoi, un code vous sera envoyé par SMS pour confirmer votre demande.</span>
+          </div>
+        </div>
+
+        <div class="gdpr-note">
+          🔐 Vos données sont traitées conformément au RGPD. Elles ne seront jamais partagées ou revendues à des tiers. Vous pouvez demander leur suppression à tout moment.
+        </div>
+      </div>
+
+      <button class="submit-btn">📨 Envoyer ma demande</button>
+      <div class="delay-note">⏱️ Réponse garantie sous 72h ouvrées</div>
+
+    </div>
+
+    <div class="info-col">
+
+      <div class="info-block">
+        <h4>🗺️ Comment ça se passe ?</h4>
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>Vous remplissez le formulaire</strong><span>Nous recevons votre demande instantanément.</span></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div class="step-text"><strong>Analyse sous 72h</strong><span>Notre équipe étudie votre projet et prépare une offre.</span></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div class="step-text"><strong>Devis par e-mail</strong><span>Détaillé, clair, sans engagement de votre part.</span></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">4</div>
+          <div class="step-text"><strong>Validation & démarrage</strong><span>Si vous acceptez, le projet démarre et vous suivez tout en direct.</span></div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="info-block">
+        <h4>📬 Nous contacter directement</h4>
+        <div class="info-item"><span class="icon">✉️</span>contact@axiora.fr</div>
+        <div class="info-item"><span class="icon">💬</span>Discord : Axiora Support</div>
+        <div class="info-item"><span class="icon">🕐</span>Lun–Ven, 9h–19h</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="info-block">
+        <h4>❓ Questions fréquentes</h4>
+        <div class="faq-item">
+          <div class="faq-q">Le devis est-il gratuit ?</div>
+          <div class="faq-a">Oui, soumettre une demande est totalement gratuit et sans engagement.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Puis-je être remboursé ?</div>
+          <div class="faq-a">Oui, sous conditions. La main d'œuvre n'est pas remboursable. Voir notre politique.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Combien de temps prend un projet ?</div>
+          <div class="faq-a">Un règlement est livré en 24–48h, un site en 1 à 4 semaines selon la complexité.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">Mes données sont-elles sécurisées ?</div>
+          <div class="faq-a">Absolument. Toutes vos informations sont chiffrées et conformes au RGPD.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <a href="index.html" class="logo">Axio<span>ra</span></a>
+    <div class="footer-links">
+      <a href="#">CGU</a>
+      <a href="#">Confidentialité</a>
+      <a href="#">Remboursement</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-copy">© 2026 Axiora. Tous droits réservés.</div>
+  </footer>
+
+</body>
+</html>

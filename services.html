@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axiora — Nos Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0f0f0f; color: #f0f0f0; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px; border-bottom: 1px solid #1f1f1f;
+      background: #0f0f0f; position: sticky; top: 0; z-index: 100;
+    }
+    .logo { font-size: 20px; font-weight: 600; color: #7F77DD; text-decoration: none; }
+    .logo span { color: #f0f0f0; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { text-decoration: none; color: #aaa; font-size: 14px; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: #f0f0f0; }
+    .nav-links a.active { color: #7F77DD; font-weight: 500; }
+    .nav-btns { display: flex; gap: 10px; }
+    .btn-ghost { padding: 8px 18px; border: 1px solid #333; border-radius: 8px; background: transparent; color: #f0f0f0; font-size: 13px; cursor: pointer; }
+    .btn-primary { padding: 8px 18px; border: none; border-radius: 8px; background: #534AB7; color: #fff; font-size: 13px; cursor: pointer; font-weight: 500; }
+    .btn-primary:hover { background: #6B62D4; }
+
+    /* PAGE HERO */
+    .page-hero {
+      padding: 70px 40px 50px; text-align: center;
+      border-bottom: 1px solid #1f1f1f;
+      background: radial-gradient(ellipse at top, #1a1830 0%, #0f0f0f 60%);
+    }
+    .badge { display: inline-block; background: #1a1830; color: #9D96E8; font-size: 12px; padding: 5px 14px; border-radius: 99px; margin-bottom: 20px; border: 1px solid #2e2a5e; }
+    .page-hero h1 { font-size: 42px; font-weight: 600; margin-bottom: 16px; }
+    .page-hero h1 em { color: #7F77DD; font-style: normal; }
+    .page-hero p { font-size: 16px; color: #999; max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+    /* SECTION */
+    .section { padding: 64px 40px; border-bottom: 1px solid #1f1f1f; }
+    .section-label { font-size: 12px; font-weight: 500; color: #7F77DD; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .section h2 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+    .section .sub { font-size: 15px; color: #777; margin-bottom: 40px; }
+
+    /* SERVICES DÉTAILLÉS */
+    .service-block {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+      align-items: center; margin-bottom: 64px; padding-bottom: 64px;
+      border-bottom: 1px solid #1f1f1f;
+    }
+    .service-block:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .service-block.reverse { direction: rtl; }
+    .service-block.reverse > * { direction: ltr; }
+    .service-visual {
+      background: #141414; border: 1px solid #1f1f1f; border-radius: 16px;
+      padding: 40px; display: flex; align-items: center; justify-content: center;
+      min-height: 220px; font-size: 72px;
+    }
+    .service-content h3 { font-size: 24px; font-weight: 600; margin-bottom: 14px; }
+    .service-content p { font-size: 15px; color: #999; line-height: 1.7; margin-bottom: 20px; }
+    .service-features { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+    .sf { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #ccc; }
+    .sf::before { content: "✓"; color: #7F77DD; font-weight: 600; flex-shrink: 0; }
+    .service-price {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #1a1830; border: 1px solid #2e2a5e;
+      padding: 10px 18px; border-radius: 10px; font-size: 14px; color: #9D96E8;
+      font-weight: 500; margin-bottom: 16px;
+    }
+    .btn-service {
+      display: inline-block; padding: 11px 24px; background: #534AB7;
+      color: #fff; border: none; border-radius: 10px; font-size: 14px;
+      font-weight: 500; cursor: pointer; text-decoration: none;
+    }
+    .btn-service:hover { background: #6B62D4; }
+    .btn-service-ghost {
+      display: inline-block; padding: 11px 24px; background: transparent;
+      color: #f0f0f0; border: 1px solid #333; border-radius: 10px;
+      font-size: 14px; font-weight: 500; cursor: pointer; text-decoration: none;
+      margin-left: 10px;
+    }
+
+    /* GRILLE PETITS SERVICES */
+    .small-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .small-card {
+      background: #141414; border: 1px solid #1f1f1f; border-radius: 14px;
+      padding: 24px; transition: border-color .2s;
+    }
+    .small-card:hover { border-color: #534AB7; }
+    .small-icon { font-size: 28px; margin-bottom: 14px; }
+    .small-card h4 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+    .small-card p { font-size: 13px; color: #777; line-height: 1.6; }
+    .small-price { font-size: 13px; color: #7F77DD; font-weight: 500; margin-top: 12px; }
+
+    /* CTA FINAL */
+    .cta-section {
+      padding: 64px 40px; text-align: center;
+      background: radial-gradient(ellipse at center, #1a1830 0%, #0f0f0f 70%);
+    }
+    .cta-section h2 { font-size: 32px; font-weight: 600; margin-bottom: 14px; }
+    .cta-section p { font-size: 16px; color: #999; max-width: 480px; margin: 0 auto 32px; line-height: 1.7; }
+    .cta-btns { display: flex; gap: 14px; justify-content: center; }
+
+    /* FOOTER */
+    footer { padding: 28px 40px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #1f1f1f; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: #555; text-decoration: none; }
+    .footer-copy { font-size: 12px; color: #444; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="index.html" class="logo">Axio<span>ra</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="services.html" class="active">Services</a></li>
+      <li><a href="boutique.html">Boutique</a></li>
+      <li><a href="abonnements.html">Abonnements</a></li>
+      <li><a href="avis.html">Avis</a></li>
+      <li><a href="apropos.html">À propos</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-btns">
+      <button class="btn-ghost">Connexion</button>
+      <button class="btn-primary">Créer un compte</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="badge">🛠️ Ce qu'on fait pour vous</div>
+    <h1>Nos <em>services</em></h1>
+    <p>Des solutions sur mesure ou prêtes à l'emploi pour votre présence web. Chaque projet est traité avec soin et professionnalisme.</p>
+  </div>
+
+  <!-- SERVICES PRINCIPAUX -->
+  <section class="section">
+    <div class="section-label">Services principaux</div>
+    <h2>Nos spécialités</h2>
+    <p class="sub">Ce qu'on fait le mieux, depuis le premier jour.</p>
+
+    <!-- SERVICE 1 -->
+    <div class="service-block">
+      <div class="service-visual">🌐</div>
+      <div class="service-content">
+        <h3>Création de site web</h3>
+        <p>On conçoit votre site de A à Z — design, intégration, mise en ligne. Site vitrine, portfolio, page d'entreprise ou landing page : on s'adapte à votre besoin.</p>
+        <div class="service-features">
+          <div class="sf">Design moderne et responsive (mobile + desktop)</div>
+          <div class="sf">Optimisé pour le référencement (SEO)</div>
+          <div class="sf">Livré avec nom de domaine et hébergement si besoin</div>
+          <div class="sf">Suivi de la progression en temps réel dans votre espace</div>
+        </div>
+        <div class="service-price">💰 Tarif sur devis — réponse sous 72h</div><br>
+        <a href="contact.html" class="btn-service">Demander un devis</a>
+        <a href="boutique.html" class="btn-service-ghost">Voir les templates</a>
+      </div>
+    </div>
+
+    <!-- SERVICE 2 -->
+    <div class="service-block reverse">
+      <div class="service-visual">📄</div>
+      <div class="service-content">
+        <h3>Règlements professionnels</h3>
+        <p>On rédige vos règlements sur mesure — serveur Discord, jeu en ligne, entreprise, association. Des documents clairs, complets et prêts à utiliser.</p>
+        <div class="service-features">
+          <div class="sf">Règlements Discord, FiveM, Minecraft, et autres</div>
+          <div class="sf">CGU, règlement intérieur d'entreprise</div>
+          <div class="sf">Rédigé dans un langage clair et professionnel</div>
+          <div class="sf">Livré en PDF dans votre coffre-fort numérique</div>
+        </div>
+        <div class="service-price">💰 À partir de 9,99 €</div><br>
+        <a href="boutique.html" class="btn-service">Voir les règlements</a>
+        <a href="contact.html" class="btn-service-ghost">Sur mesure</a>
+      </div>
+    </div>
+
+    <!-- SERVICE 3 -->
+    <div class="service-block">
+      <div class="service-visual">💻</div>
+      <div class="service-content">
+        <h3>Code sur mesure</h3>
+        <p>Vous avez besoin d'un script, d'un bot Discord, d'une fonctionnalité spécifique ou d'un outil personnalisé ? On développe ce qu'il vous faut.</p>
+        <div class="service-features">
+          <div class="sf">Bots Discord (modération, musique, tickets…)</div>
+          <div class="sf">Scripts et outils automatisés</div>
+          <div class="sf">Fonctionnalités web spécifiques</div>
+          <div class="sf">Code livré propre et documenté</div>
+        </div>
+        <div class="service-price">💰 Tarif sur devis — réponse sous 72h</div><br>
+        <a href="contact.html" class="btn-service">Nous contacter</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTRES SERVICES -->
+  <section class="section" style="background:#0d0d0d">
+    <div class="section-label">Également disponible</div>
+    <h2>Autres services</h2>
+    <p class="sub">Des solutions complémentaires pour aller plus loin.</p>
+    <div class="small-grid">
+      <div class="small-card">
+        <div class="small-icon">🔒</div>
+        <h4>Protection des données</h4>
+        <p>Audit RGPD, conseils VPN, sécurisation de vos informations personnelles en ligne.</p>
+        <div class="small-price">À partir de 4,99 €/mois</div>
+      </div>
+      <div class="small-card">
+        <div class="small-icon">🗄️</div>
+        <h4>Coffre-fort numérique</h4>
+        <p>Stockez vos documents importants en toute sécurité, accessibles depuis votre espace client.</p>
+        <div class="small-price">À partir de 2,99 €/mois</div>
+      </div>
+      <div class="small-card">
+        <div class="small-icon">🎧</div>
+        <h4>Assistance d'urgence</h4>
+        <p>Besoin d'aide rapidement ? Notre équipe intervient en priorité pour les situations urgentes.</p>
+        <div class="small-price">Offerte avec Pro & Premium</div>
+      </div>
+      <div class="small-card">
+        <div class="small-icon">📋</div>
+        <h4>Documents légaux</h4>
+        <p>Politique de confidentialité, CGU, mentions légales conformes au droit français.</p>
+        <div class="small-price">À partir de 14,99 €</div>
+      </div>
+      <div class="small-card">
+        <div class="small-icon">🛡️</div>
+        <h4>Audit sécurité web</h4>
+        <p>Analyse de votre site pour détecter les failles et vous conseiller sur les corrections.</p>
+        <div class="small-price">Sur devis</div>
+      </div>
+      <div class="small-card">
+        <div class="small-icon">📈</div>
+        <h4>Conseil & accompagnement</h4>
+        <p>Besoin d'un avis expert sur votre projet web ? On vous guide dans les bonnes directions.</p>
+        <div class="small-price">Sur devis</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <div class="cta-section">
+    <h2>Vous avez un projet en tête ?</h2>
+    <p>Décrivez-nous votre besoin, on vous répond avec un devis clair sous 72h. Sans engagement.</p>
+    <div class="cta-btns">
+      <a href="contact.html" class="btn-service" style="font-size:15px;padding:13px 28px;">Demander un devis gratuit</a>
+      <a href="boutique.html" class="btn-service-ghost" style="font-size:15px;padding:13px 28px;">Voir la boutique</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="index.html" class="logo">Axio<span>ra</span></a>
+    <div class="footer-links">
+      <a href="#">CGU</a>
+      <a href="#">Confidentialité</a>
+      <a href="#">Remboursement</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-copy">© 2025 Axiora. Tous droits réservés.</div>
+  </footer>
+
+</body>
+</html>

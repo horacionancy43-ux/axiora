@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axiora — Améliorez votre présence web</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0f0f0f; color: #f0f0f0; }
+
+    /* NAVBAR */
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px; border-bottom: 1px solid #1f1f1f;
+      background: #0f0f0f; position: sticky; top: 0; z-index: 100;
+    }
+    .logo { font-size: 20px; font-weight: 600; color: #7F77DD; }
+    .logo span { color: #f0f0f0; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { text-decoration: none; color: #aaa; font-size: 14px; transition: color .2s; }
+    .nav-links a:hover { color: #f0f0f0; }
+    .nav-btns { display: flex; gap: 10px; }
+    .btn-ghost {
+      padding: 8px 18px; border: 1px solid #333; border-radius: 8px;
+      background: transparent; color: #f0f0f0; font-size: 13px; cursor: pointer;
+    }
+    .btn-primary {
+      padding: 8px 18px; border: none; border-radius: 8px;
+      background: #534AB7; color: #fff; font-size: 13px; cursor: pointer; font-weight: 500;
+    }
+    .btn-primary:hover { background: #6B62D4; }
+
+    /* HERO */
+    .hero {
+      text-align: center; padding: 90px 40px 60px;
+      border-bottom: 1px solid #1f1f1f;
+    }
+    .badge {
+      display: inline-block; background: #1a1830; color: #9D96E8;
+      font-size: 12px; padding: 5px 14px; border-radius: 99px;
+      margin-bottom: 24px; border: 1px solid #2e2a5e;
+    }
+    .hero h1 { font-size: 48px; font-weight: 600; line-height: 1.15; max-width: 640px; margin: 0 auto 20px; }
+    .hero h1 em { color: #7F77DD; font-style: normal; }
+    .hero p { font-size: 16px; color: #999; max-width: 480px; margin: 0 auto 36px; line-height: 1.7; }
+    .hero-btns { display: flex; gap: 14px; justify-content: center; }
+    .hero-btns .btn-lg {
+      padding: 13px 28px; border-radius: 10px; font-size: 15px;
+      font-weight: 500; cursor: pointer;
+    }
+
+    /* TRUST BAR */
+    .trust {
+      display: flex; justify-content: center; gap: 48px;
+      padding: 22px 40px; border-bottom: 1px solid #1f1f1f;
+      background: #0d0d0d;
+    }
+    .trust-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #888; }
+    .trust-item span { color: #7F77DD; font-size: 18px; }
+
+    /* SERVICES */
+    .section { padding: 64px 40px; border-bottom: 1px solid #1f1f1f; }
+    .section-label { font-size: 12px; font-weight: 500; color: #7F77DD; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .section h2 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+    .section .sub { font-size: 15px; color: #777; margin-bottom: 40px; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .svc-card {
+      background: #141414; border: 1px solid #1f1f1f; border-radius: 14px;
+      padding: 24px; transition: border-color .2s;
+    }
+    .svc-card:hover { border-color: #534AB7; }
+    .svc-icon {
+      width: 42px; height: 42px; background: #1a1830; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 14px;
+    }
+    .svc-card h3 { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+    .svc-card p { font-size: 13px; color: #777; line-height: 1.6; }
+    .svc-price { font-size: 13px; color: #7F77DD; font-weight: 500; margin-top: 12px; }
+
+    /* PLANS */
+    .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .plan-card {
+      background: #141414; border: 1px solid #1f1f1f;
+      border-radius: 14px; padding: 24px;
+    }
+    .plan-card.featured { border: 2px solid #534AB7; }
+    .plan-pop {
+      display: inline-block; background: #1a1830; color: #9D96E8;
+      font-size: 11px; font-weight: 500; padding: 3px 10px;
+      border-radius: 99px; margin-bottom: 12px;
+    }
+    .plan-name { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+    .plan-price { font-size: 32px; font-weight: 600; color: #7F77DD; }
+    .plan-price span { font-size: 14px; color: #666; font-weight: 400; }
+    .plan-features { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+    .pf { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #999; }
+    .pf::before { content: "✓"; color: #7F77DD; font-weight: 600; }
+
+    /* AVIS */
+    .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .review-card {
+      background: #141414; border: 1px solid #1f1f1f;
+      border-radius: 14px; padding: 20px;
+    }
+    .stars { color: #f0a500; font-size: 14px; margin-bottom: 10px; }
+    .review-text { font-size: 13px; color: #999; line-height: 1.6; margin-bottom: 14px; }
+    .reviewer { display: flex; align-items: center; gap: 10px; }
+    .avatar {
+      width: 32px; height: 32px; border-radius: 50%; background: #1a1830;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 500; color: #9D96E8;
+    }
+    .reviewer-name { font-size: 13px; font-weight: 500; }
+    .reviewer-date { font-size: 11px; color: #555; }
+
+    /* FOOTER */
+    footer {
+      padding: 28px 40px; display: flex; justify-content: space-between;
+      align-items: center; border-top: 1px solid #1f1f1f;
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: #555; text-decoration: none; }
+    .footer-copy { font-size: 12px; color: #444; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">Axio<span>ra</span></div>
+    <ul class="nav-links">
+      <li><a href="#">Services</a></li>
+      <li><a href="#">Boutique</a></li>
+      <li><a href="#">Abonnements</a></li>
+      <li><a href="#">Avis</a></li>
+      <li><a href="#">À propos</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="nav-btns">
+      <button class="btn-ghost">Connexion</button>
+      <button class="btn-primary">Créer un compte</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge">⚡ Jeunes entrepreneurs · 9 mois d'expérience</div>
+    <h1>Améliorez votre présence web avec <em>Axiora</em></h1>
+    <p>Création de sites, règlements professionnels, protection de vos données — tout pour vous améliorer sur le web.</p>
+    <div class="hero-btns">
+      <button class="btn-lg" style="background:#534AB7;color:#fff;border:none;">Découvrir nos services</button>
+      <button class="btn-lg" style="background:transparent;border:1px solid #333;color:#f0f0f0;">Voir la boutique</button>
+    </div>
+  </section>
+
+  <!-- TRUST BAR -->
+  <div class="trust">
+    <div class="trust-item"><span>🔒</span> Données sécurisées</div>
+    <div class="trust-item"><span>↩️</span> Satisfait ou remboursé*</div>
+    <div class="trust-item"><span>⏱️</span> Réponse sous 72h</div>
+    <div class="trust-item"><span>⭐</span> 100% avis positifs</div>
+  </div>
+
+  <!-- SERVICES -->
+  <section class="section">
+    <div class="section-label">Nos services</div>
+    <h2>Ce qu'Axiora peut faire pour vous</h2>
+    <p class="sub">Des solutions prêtes à l'emploi ou entièrement personnalisées.</p>
+    <div class="services-grid">
+      <div class="svc-card"><div class="svc-icon">🌐</div><h3>Création de site web</h3><p>Site vitrine, e-commerce, portfolio — livré clé en main.</p><div class="svc-price">Sur devis</div></div>
+      <div class="svc-card"><div class="svc-icon">📄</div><h3>Règlements professionnels</h3><p>CGU, règlements jeux/discord/entreprise, RGPD.</p><div class="svc-price">À partir de 9,99 €</div></div>
+      <div class="svc-card"><div class="svc-icon">🔒</div><h3>Protection des données</h3><p>VPN, sécurisation, audit RGPD pour vos informations.</p><div class="svc-price">À partir de 4,99 €/mois</div></div>
+      <div class="svc-card"><div class="svc-icon">🗄️</div><h3>Coffre-fort numérique</h3><p>Stockage sécurisé de vos documents en ligne.</p><div class="svc-price">À partir de 2,99 €/mois</div></div>
+      <div class="svc-card"><div class="svc-icon">🎧</div><h3>Support prioritaire</h3><p>Assistance dédiée, urgences, suivi personnalisé.</p><div class="svc-price">Inclus dans Pro+</div></div>
+      <div class="svc-card"><div class="svc-icon">💻</div><h3>Code sur mesure</h3><p>Développement personnalisé selon vos besoins.</p><div class="svc-price">Sur devis</div></div>
+    </div>
+  </section>
+
+  <!-- PLANS -->
+  <section class="section" style="background:#0d0d0d">
+    <div class="section-label">Abonnements</div>
+    <h2>Choisissez votre formule</h2>
+    <p class="sub">Plus vous évoluez, plus vous bénéficiez d'avantages exclusifs.</p>
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">4,99 € <span>/ mois</span></div>
+        <div class="plan-features">
+          <div class="pf">Coffre-fort 10 GB</div>
+          <div class="pf">Support standard</div>
+          <div class="pf">Réductions 5%</div>
+          <div class="pf">Salon privé client</div>
+        </div>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-pop">⭐ Le plus populaire</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">12,99 € <span>/ mois</span></div>
+        <div class="plan-features">
+          <div class="pf">Coffre-fort 50 GB</div>
+          <div class="pf">Réponse prioritaire</div>
+          <div class="pf">Réductions 15%</div>
+          <div class="pf">Support étendu</div>
+          <div class="pf">Urgence gratuite</div>
+        </div>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Premium</div>
+        <div class="plan-price">24,99 € <span>/ mois</span></div>
+        <div class="plan-features">
+          <div class="pf">Coffre-fort 200 GB</div>
+          <div class="pf">Réponse ultra-prioritaire</div>
+          <div class="pf">Réductions 25%</div>
+          <div class="pf">Urgence 24/7</div>
+          <div class="pf">Accès bêta anticipé</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVIS -->
+  <section class="section">
+    <div class="section-label">Avis clients</div>
+    <h2>Ce que disent nos clients</h2>
+    <p class="sub">100% de retours positifs depuis le lancement.</p>
+    <div class="reviews-grid">
+      <div class="review-card"><div class="stars">★★★★★</div><div class="review-text">Règlement Discord livré en 24h, professionnel et clair. Je recommande à 100%.</div><div class="reviewer"><div class="avatar">ML</div><div><div class="reviewer-name">Marc L.</div><div class="reviewer-date">Il y a 2 semaines</div></div></div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><div class="review-text">Site vitrine livré dans les délais, à l'écoute et très réactifs. Super équipe !</div><div class="reviewer"><div class="avatar">SA</div><div><div class="reviewer-name">Sophie A.</div><div class="reviewer-date">Il y a 1 mois</div></div></div></div>
+      <div class="review-card"><div class="stars">★★★★★</div><div class="review-text">Coffre-fort numérique simple et efficace, mes documents sont enfin en sécurité.</div><div class="reviewer"><div class="avatar">TR</div><div><div class="reviewer-name">Thomas R.</div><div class="reviewer-date">Il y a 3 semaines</div></div></div></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo">Axio<span>ra</span></div>
+    <div class="footer-links">
+      <a href="#">CGU</a>
+      <a href="#">Confidentialité</a>
+      <a href="#">Remboursement</a>
+      <a href="#">Contact</a>
+    </div>
+    <div class="footer-copy">© 2025 Axiora. Tous droits réservés.</div>
+  </footer>
+
+</body>
+</html>
