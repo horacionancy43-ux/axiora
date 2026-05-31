@@ -6,6 +6,8 @@
     { "source": "/avis", "destination": "/avis.html" },
     { "source": "/apropos", "destination": "/apropos.html" },
     { "source": "/contact", "destination": "/contact.html" },
+    { "source": "/connexion", "destination": "/connexion.html" },
+    { "source": "/inscription", "destination": "/inscription.html" },
     { "source": "/", "destination": "/index.html" }
   ]
 }
