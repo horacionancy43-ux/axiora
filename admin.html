@@ -46,6 +46,7 @@
     .btn { padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; }
     .btn-primary { background: #534AB7; color: #fff; border: none; }
     .btn-ghost { background: transparent; color: #f0f0f0; border: 1px solid #333; }
+    .btn-danger { background: #E24B4A; color: #fff; border: none; }
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
     .stat-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 18px; }
     .stat-label { font-size: 12px; color: #777; margin-bottom: 8px; }
@@ -69,6 +70,8 @@
     .s-progress { background: #2a1800; color: #f0a500; border: 1px solid #3a2200; }
     .s-done { background: #0a2218; color: #4ade80; border: 1px solid #0f3a28; }
     .s-review { background: #1a0808; color: #E24B4A; border: 1px solid #3a1010; }
+    .s-actif { background: #0a2218; color: #4ade80; border: 1px solid #0f3a28; }
+    .s-inactif { background: #1a0808; color: #E24B4A; border: 1px solid #3a1010; }
     .action-btn { padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; border: 1px solid #333; background: transparent; color: #aaa; margin-right: 4px; }
     .action-btn:hover { border-color: #534AB7; color: #f0f0f0; }
     .action-btn.danger:hover { border-color: #E24B4A; color: #E24B4A; }
@@ -90,6 +93,13 @@
     .alert-success { background: #0a2218; border: 1px solid #0f3a28; color: #4ade80; }
     .loading { color: #555; font-size: 13px; padding: 12px; }
     .empty-state { text-align: center; padding: 24px; color: #555; font-size: 13px; }
+    /* FORMULAIRE STAFF */
+    .staff-form { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+    .staff-form h3 { font-size: 14px; font-weight: 500; margin-bottom: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .form-input { width: 100%; padding: 10px 14px; background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 8px; color: #f0f0f0; font-size: 13px; font-family: 'Inter', sans-serif; outline: none; }
+    .form-input:focus { border-color: #534AB7; }
+    .form-actions { display: flex; gap: 10px; margin-top: 12px; }
   </style>
 </head>
 <body>
@@ -127,6 +137,9 @@
         <a href="#" class="nav-item"><span class="icon">👥</span> Clients <span class="nav-badge" id="badgeClients">0</span></a>
         <a href="#" class="nav-item"><span class="icon">🛍️</span> Boutique</a>
         <a href="#" class="nav-item"><span class="icon">💳</span> Paiements</a>
+        <div class="nav-section">Équipe</div>
+        <a href="#" class="nav-item" onclick="scrollToStaff()"><span class="icon">👤</span> Gestion Staff <span class="nav-badge" id="badgeStaff">0</span></a>
+        <a href="/staff" class="nav-item"><span class="icon">🔗</span> Espace Staff</a>
         <div class="nav-section">Contenu</div>
         <a href="#" class="nav-item"><span class="icon">⭐</span> Avis</a>
         <a href="#" class="nav-item"><span class="icon">💬</span> Messages</a>
@@ -175,9 +188,9 @@
           <div class="stat-change" style="color:#777">En cours</div>
         </div>
         <div class="stat-card">
-          <div class="stat-label">📁 Total commandes</div>
-          <div class="stat-value" id="statTotalCommandes">0</div>
-          <div class="stat-change up">Toutes</div>
+          <div class="stat-label">👤 Membres staff</div>
+          <div class="stat-value" id="statStaff">0</div>
+          <div class="stat-change up">Actifs</div>
         </div>
       </div>
 
@@ -222,7 +235,7 @@
         </div>
       </div>
 
-      <div class="grid-2">
+      <div class="grid-2" style="margin-bottom:28px">
         <div class="section">
           <div class="section-header"><h2>👥 Clients inscrits</h2></div>
           <div class="table-card">
@@ -253,6 +266,45 @@
           </div>
         </div>
       </div>
+
+      <!-- GESTION STAFF -->
+      <div class="section" id="staffSection">
+        <div class="section-header">
+          <h2>👤 Gestion de l'équipe staff</h2>
+          <button class="btn btn-primary" onclick="toggleFormStaff()">+ Ajouter un membre</button>
+        </div>
+
+        <!-- FORMULAIRE AJOUT -->
+        <div class="staff-form" id="formStaff" style="display:none">
+          <h3>Nouveau membre staff</h3>
+          <div class="form-row">
+            <input type="text" class="form-input" id="staffPrenom" placeholder="Prénom">
+            <input type="text" class="form-input" id="staffNom" placeholder="Nom">
+          </div>
+          <div class="form-row">
+            <input type="email" class="form-input" id="staffEmailInput" placeholder="Email">
+            <input type="password" class="form-input" id="staffMdp" placeholder="Mot de passe">
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" onclick="ajouterStaff()">✅ Créer le compte</button>
+            <button class="btn btn-ghost" onclick="toggleFormStaff()">Annuler</button>
+          </div>
+          <div id="staffMsg" style="font-size:13px;margin-top:10px;display:none"></div>
+        </div>
+
+        <!-- LISTE STAFF -->
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr><th>Membre</th><th>Email</th><th>Rôle</th><th>Statut</th><th>Ajouté le</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="staffTable">
+              <tr><td colspan="6" class="loading">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -279,6 +331,121 @@
       window.location.href = '/';
     }
 
+    function scrollToStaff() {
+      document.getElementById('staffSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function toggleFormStaff() {
+      const form = document.getElementById('formStaff');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    }
+
+    async function ajouterStaff() {
+      const prenom = document.getElementById('staffPrenom').value.trim();
+      const nom = document.getElementById('staffNom').value.trim();
+      const email = document.getElementById('staffEmailInput').value.trim();
+      const mdp = document.getElementById('staffMdp').value;
+      const msg = document.getElementById('staffMsg');
+
+      if (!prenom || !email || !mdp) {
+        msg.style.display = 'block';
+        msg.style.color = '#E24B4A';
+        msg.textContent = '❌ Prénom, email et mot de passe obligatoires.';
+        return;
+      }
+
+      const sessionStr = localStorage.getItem('axiora_session');
+      if (!sessionStr) return;
+      const token = JSON.parse(sessionStr).access_token;
+
+      try {
+        const res = await fetch(`${API_URL}/admin/staff`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prenom, nom, email, mot_de_passe: mdp })
+        });
+        const data = await res.json();
+        if (data.success) {
+          msg.style.display = 'block';
+          msg.style.color = '#4ade80';
+          msg.textContent = '✅ Membre ajouté avec succès !';
+          document.getElementById('staffPrenom').value = '';
+          document.getElementById('staffNom').value = '';
+          document.getElementById('staffEmailInput').value = '';
+          document.getElementById('staffMdp').value = '';
+          chargerStaff(token);
+        } else {
+          msg.style.display = 'block';
+          msg.style.color = '#E24B4A';
+          msg.textContent = '❌ ' + (data.error || 'Erreur');
+        }
+      } catch(e) {
+        msg.style.display = 'block';
+        msg.style.color = '#E24B4A';
+        msg.textContent = '❌ Erreur de connexion';
+      }
+    }
+
+    async function supprimerStaff(id) {
+      if (!confirm('Supprimer ce membre du staff ?')) return;
+      const sessionStr = localStorage.getItem('axiora_session');
+      if (!sessionStr) return;
+      const token = JSON.parse(sessionStr).access_token;
+      try {
+        const res = await fetch(`${API_URL}/admin/staff/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (data.success) chargerStaff(token);
+      } catch(e) {}
+    }
+
+    async function toggleStaffActif(id, actifActuel) {
+      const sessionStr = localStorage.getItem('axiora_session');
+      if (!sessionStr) return;
+      const token = JSON.parse(sessionStr).access_token;
+      try {
+        const res = await fetch(`${API_URL}/admin/staff/${id}`, {
+          method: 'PATCH',
+          headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ actif: !actifActuel })
+        });
+        const data = await res.json();
+        if (data.success) chargerStaff(token);
+      } catch(e) {}
+    }
+
+    async function chargerStaff(token) {
+      const headers = { 'Authorization': `Bearer ${token}` };
+      try {
+        const res = await fetch(`${API_URL}/admin/staff`, { headers });
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          const actifs = data.filter(s => s.actif).length;
+          document.getElementById('statStaff').textContent = actifs;
+          document.getElementById('badgeStaff').textContent = data.length;
+          const html = data.map(s => {
+            const date = s.created_at ? new Date(s.created_at).toLocaleDateString('fr-FR') : '-';
+            return `<tr>
+              <td><strong>${s.prenom || ''} ${s.nom || ''}</strong></td>
+              <td style="color:#555;font-size:12px">${s.email || '-'}</td>
+              <td><span class="status-pill s-new">${s.role || 'staff'}</span></td>
+              <td><span class="status-pill ${s.actif ? 's-actif' : 's-inactif'}">${s.actif ? 'Actif' : 'Inactif'}</span></td>
+              <td style="color:#555">${date}</td>
+              <td>
+                <button class="action-btn" onclick="toggleStaffActif('${s.id}', ${s.actif})">${s.actif ? '⏸️ Suspendre' : '▶️ Activer'}</button>
+                <button class="action-btn danger" onclick="supprimerStaff('${s.id}')">🗑️ Supprimer</button>
+              </td>
+            </tr>`;
+          }).join('');
+          document.getElementById('staffTable').innerHTML = html || '<tr><td colspan="6" class="empty-state">Aucun membre staff</td></tr>';
+        }
+      } catch(e) {
+        document.getElementById('staffTable').innerHTML = '<tr><td colspan="6" class="empty-state">Erreur de chargement</td></tr>';
+      }
+    }
+
     async function chargerDonnees() {
       const sessionStr = localStorage.getItem('axiora_session');
       if (!sessionStr) return;
@@ -302,10 +469,11 @@
       } catch(e) {
         document.getElementById('clientsTable').innerHTML = '<tr><td colspan="3" class="empty-state">Aucun client</td></tr>';
       }
+
+      chargerStaff(token);
     }
 
     function afficherCommandes(commandes) {
-      document.getElementById('statTotalCommandes').textContent = commandes.length;
       const enCours = commandes.filter(c => c.statut === 'en_cours').length;
       document.getElementById('statCommandes').textContent = enCours;
       document.getElementById('badgeCommandes').textContent = enCours;

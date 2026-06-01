@@ -23,16 +23,10 @@ try {
   resend = new Resend(process.env.RESEND_API_KEY);
 } catch (e) { console.error('⚠️ Resend init error:', e.message); }
 
-// ==================
-// ROUTE TEST
-// ==================
 app.get('/', (req, res) => {
   res.json({ status: 'Axiora API en ligne ✅' });
 });
 
-// ==================
-// CRÉER UN PAIEMENT STRIPE
-// ==================
 app.post('/create-payment', async (req, res) => {
   try {
     const { amount, productName, email } = req.body;
@@ -45,14 +39,9 @@ app.post('/create-payment', async (req, res) => {
       cancel_url: 'https://axiora.cc/boutique?payment=cancelled',
     });
     res.json({ url: session.url });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ==================
-// CRÉER UN ABONNEMENT STRIPE
-// ==================
 app.post('/create-subscription', async (req, res) => {
   try {
     const { planName, email } = req.body;
@@ -66,14 +55,9 @@ app.post('/create-subscription', async (req, res) => {
       cancel_url: 'https://axiora.cc/abonnements?subscription=cancelled',
     });
     res.json({ url: session.url });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ==================
-// INSCRIPTION CLIENT
-// ==================
 app.post('/register', async (req, res) => {
   try {
     const { email, password, prenom, nom, telephone, pays } = req.body;
@@ -95,32 +79,20 @@ app.post('/register', async (req, res) => {
           <p style="color:#555;font-size:12px;margin-top:24px;">© 2026 Axiora</p>
         </div>`
       });
-    } catch (emailErr) {
-      console.error('⚠️ Email send error:', emailErr.message);
-    }
+    } catch (emailErr) { console.error('⚠️ Email send error:', emailErr.message); }
     res.json({ success: true, user: data.user });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ==================
-// CONNEXION CLIENT
-// ==================
 app.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
     res.json({ success: true, session: data.session, user: data.user });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ==================
-// MIDDLEWARE AUTH
-// ==================
 async function authMiddleware(req, res, next) {
   const token = req.headers.authorization?.replace('Bearer ', '');
   if (!token) return res.status(401).json({ error: 'Non autorisé' });
@@ -129,112 +101,93 @@ async function authMiddleware(req, res, next) {
     if (error || !data.user) return res.status(401).json({ error: 'Token invalide' });
     req.user = data.user;
     next();
-  } catch (err) {
-    res.status(401).json({ error: 'Erreur auth' });
-  }
+  } catch (err) { res.status(401).json({ error: 'Erreur auth' }); }
 }
 
-// ==================
-// GET COMMANDES
-// ==================
 app.get('/commandes', authMiddleware, async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from('commandes').select('*')
-      .eq('user_id', req.user.id)
-      .order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('commandes').select('*').eq('user_id', req.user.id).order('created_at', { ascending: false });
     if (error) throw error;
     res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ==================
-// GET PROJETS
-// ==================
 app.get('/projets', authMiddleware, async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from('projets').select('*')
-      .eq('user_id', req.user.id)
-      .order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('projets').select('*').eq('user_id', req.user.id).order('created_at', { ascending: false });
     if (error) throw error;
     res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ==================
-// GET FICHIERS
-// ==================
 app.get('/fichiers', authMiddleware, async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from('fichiers').select('*')
-      .eq('user_id', req.user.id)
-      .order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('fichiers').select('*').eq('user_id', req.user.id).order('created_at', { ascending: false });
     if (error) throw error;
     res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ==================
-// ADMIN — TOUTES LES COMMANDES
-// ==================
 app.get('/admin/commandes', authMiddleware, async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from('commandes').select('*')
-      .order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('commandes').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ==================
-// ADMIN — TOUS LES CLIENTS
-// ==================
 app.get('/admin/clients', authMiddleware, async (req, res) => {
   try {
-    const { data, error } = await supabase
-      .from('profils').select('*')
-      .order('created_at', { ascending: false });
+    const { data, error } = await supabase.from('profils').select('*').order('created_at', { ascending: false });
     if (error) throw error;
     res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ==================
-// STAFF LOGIN
-// ==================
+app.get('/admin/staff', authMiddleware, async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('staff').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    res.json(data);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.post('/admin/staff', authMiddleware, async (req, res) => {
+  try {
+    const { prenom, nom, email, mot_de_passe } = req.body;
+    const { data, error } = await supabase.from('staff').insert([{ prenom, nom, email, mot_de_passe, actif: true }]).select().single();
+    if (error) throw error;
+    res.json({ success: true, staff: data });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.patch('/admin/staff/:id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabase.from('staff').update(req.body).eq('id', id).select().single();
+    if (error) throw error;
+    res.json({ success: true, staff: data });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete('/admin/staff/:id', authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { error } = await supabase.from('staff').delete().eq('id', id);
+    if (error) throw error;
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 app.post('/staff/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const { data, error } = await supabase
-      .from('staff')
-      .select('*')
-      .eq('email', email)
-      .eq('mot_de_passe', password)
-      .eq('actif', true)
-      .single();
+    const { data, error } = await supabase.from('staff').select('*').eq('email', email).eq('mot_de_passe', password).eq('actif', true).single();
     if (error || !data) return res.status(401).json({ error: 'Identifiants incorrects' });
     res.json({ success: true, staff: data });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// ==================
-// DÉMARRAGE SERVEUR
-// ==================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`✅ Serveur Axiora démarré sur le port ${PORT}`);
