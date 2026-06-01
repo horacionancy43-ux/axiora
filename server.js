@@ -7,28 +7,21 @@ const app = express();
 app.use(cors({ origin: ['https://axiora.cc', 'http://localhost:3000'] }));
 app.use(express.json());
 
-// Init services avec vérification
 let stripe, supabase, resend;
 
 try {
   stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-} catch (e) {
-  console.error('⚠️ Stripe init error:', e.message);
-}
+} catch (e) { console.error('⚠️ Stripe init error:', e.message); }
 
 try {
   const { createClient } = require('@supabase/supabase-js');
   supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET_KEY);
-} catch (e) {
-  console.error('⚠️ Supabase init error:', e.message);
-}
+} catch (e) { console.error('⚠️ Supabase init error:', e.message); }
 
 try {
   const { Resend } = require('resend');
   resend = new Resend(process.env.RESEND_API_KEY);
-} catch (e) {
-  console.error('⚠️ Resend init error:', e.message);
-}
+} catch (e) { console.error('⚠️ Resend init error:', e.message); }
 
 // ==================
 // ROUTE TEST
@@ -89,7 +82,6 @@ app.post('/register', async (req, res) => {
       options: { data: { prenom, nom, telephone, pays } }
     });
     if (error) throw error;
-
     try {
       await resend.emails.send({
         from: 'Axiora <contact@axiora.cc>',
@@ -106,7 +98,6 @@ app.post('/register', async (req, res) => {
     } catch (emailErr) {
       console.error('⚠️ Email send error:', emailErr.message);
     }
-
     res.json({ success: true, user: data.user });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -186,6 +177,56 @@ app.get('/fichiers', authMiddleware, async (req, res) => {
       .order('created_at', { ascending: false });
     if (error) throw error;
     res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==================
+// ADMIN — TOUTES LES COMMANDES
+// ==================
+app.get('/admin/commandes', authMiddleware, async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('commandes').select('*')
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==================
+// ADMIN — TOUS LES CLIENTS
+// ==================
+app.get('/admin/clients', authMiddleware, async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('profils').select('*')
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==================
+// STAFF LOGIN
+// ==================
+app.post('/staff/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const { data, error } = await supabase
+      .from('staff')
+      .select('*')
+      .eq('email', email)
+      .eq('mot_de_passe', password)
+      .eq('actif', true)
+      .single();
+    if (error || !data) return res.status(401).json({ error: 'Identifiants incorrects' });
+    res.json({ success: true, staff: data });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Axiora — Espace Staff</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #f0f0f0; display: flex; min-height: 100vh; }
+    #loginOverlay { position: fixed; inset: 0; background: #0a0a0a; display: flex; align-items: center; justify-content: center; z-index: 9999; }
+    .login-card { background: #141414; border: 1px solid #2e2a5e; border-radius: 16px; padding: 40px; width: 100%; max-width: 380px; text-align: center; }
+    .login-card .icon { font-size: 40px; margin-bottom: 16px; }
+    .login-card h2 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+    .login-card p { font-size: 13px; color: #777; margin-bottom: 28px; }
+    .login-card input { width: 100%; padding: 12px 16px; background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 10px; color: #f0f0f0; font-size: 14px; font-family: 'Inter', sans-serif; outline: none; margin-bottom: 14px; }
+    .login-card input:focus { border-color: #534AB7; }
+    .login-card button { width: 100%; padding: 12px; background: #534AB7; color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; }
+    .login-card button:hover { background: #6B62D4; }
+    .login-error { color: #E24B4A; font-size: 13px; margin-top: 10px; display: none; }
+    #staffContent { display: none; width: 100%; }
+    .sidebar { width: 220px; background: #0f0f0f; border-right: 1px solid #1f1f1f; display: flex; flex-direction: column; position: fixed; height: 100vh; }
+    .sidebar-logo { padding: 20px 24px; border-bottom: 1px solid #1f1f1f; display: flex; align-items: center; gap: 10px; }
+    .logo { font-size: 18px; font-weight: 600; color: #7F77DD; text-decoration: none; }
+    .logo span { color: #f0f0f0; }
+    .staff-badge { font-size: 10px; font-weight: 600; background: #1a1830; color: #9D96E8; border: 1px solid #2e2a5e; padding: 2px 8px; border-radius: 99px; }
+    .sidebar-user { padding: 16px 24px; border-bottom: 1px solid #1f1f1f; display: flex; align-items: center; gap: 10px; }
+    .user-av { width: 36px; height: 36px; border-radius: 50%; background: #1a1830; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #9D96E8; flex-shrink: 0; }
+    .user-name { font-size: 13px; font-weight: 500; }
+    .user-role { font-size: 11px; color: #7F77DD; }
+    .sidebar-nav { flex: 1; padding: 12px 0; overflow-y: auto; }
+    .nav-section { padding: 6px 24px 4px; font-size: 10px; font-weight: 600; color: #444; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+    .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 24px; font-size: 13px; color: #777; cursor: pointer; transition: all .2s; text-decoration: none; }
+    .nav-item:hover { color: #f0f0f0; background: #141414; }
+    .nav-item.active { color: #f0f0f0; background: #1a1830; border-right: 2px solid #534AB7; }
+    .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
+    .nav-badge { margin-left: auto; background: #534AB7; color: #fff; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px; }
+    .sidebar-footer { padding: 16px 24px; border-top: 1px solid #1f1f1f; }
+    .logout-btn { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; cursor: pointer; background: none; border: none; font-family: 'Inter', sans-serif; }
+    .logout-btn:hover { color: #f0f0f0; }
+    .main { margin-left: 220px; flex: 1; padding: 32px; }
+    .page-header { margin-bottom: 28px; }
+    .page-header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
+    .page-header p { font-size: 14px; color: #777; }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
+    .stat-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 18px; }
+    .stat-label { font-size: 12px; color: #777; margin-bottom: 8px; }
+    .stat-value { font-size: 24px; font-weight: 600; margin-bottom: 4px; color: #7F77DD; }
+    .stat-sub { font-size: 12px; color: #555; }
+    .section { margin-bottom: 28px; }
+    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .section-header h2 { font-size: 15px; font-weight: 600; }
+    .table-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th { padding: 12px 16px; text-align: left; font-weight: 500; color: #555; border-bottom: 1px solid #1f1f1f; font-size: 12px; text-transform: uppercase; }
+    td { padding: 12px 16px; border-bottom: 1px solid #0f0f0f; color: #ccc; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #1a1a1a; }
+    .status-pill { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 99px; display: inline-block; }
+    .s-new { background: #1a1830; color: #9D96E8; border: 1px solid #2e2a5e; }
+    .s-progress { background: #2a1800; color: #f0a500; border: 1px solid #3a2200; }
+    .s-done { background: #0a2218; color: #4ade80; border: 1px solid #0f3a28; }
+    .action-btn { padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: 'Inter', sans-serif; border: 1px solid #333; background: transparent; color: #aaa; margin-right: 4px; }
+    .action-btn:hover { border-color: #534AB7; color: #f0f0f0; }
+    .mini-progress { height: 4px; background: #1f1f1f; border-radius: 99px; overflow: hidden; width: 80px; display: inline-block; vertical-align: middle; margin-right: 6px; }
+    .mini-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #534AB7, #7F77DD); }
+    .chat-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; overflow: hidden; }
+    .chat-header { padding: 14px 18px; border-bottom: 1px solid #1f1f1f; display: flex; align-items: center; gap: 10px; }
+    .chat-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; }
+    .chat-title { font-size: 14px; font-weight: 500; }
+    .chat-messages { padding: 16px; display: flex; flex-direction: column; gap: 12px; max-height: 250px; overflow-y: auto; }
+    .msg { display: flex; gap: 10px; }
+    .msg.mine { flex-direction: row-reverse; }
+    .msg-av { width: 28px; height: 28px; border-radius: 50%; background: #1a1830; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: #9D96E8; flex-shrink: 0; }
+    .msg-bubble { max-width: 75%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.5; background: #1f1f1f; color: #ccc; }
+    .msg.mine .msg-bubble { background: #534AB7; color: #fff; }
+    .msg-time { font-size: 10px; color: #444; margin-top: 4px; }
+    .chat-input { padding: 12px 16px; border-top: 1px solid #1f1f1f; display: flex; gap: 8px; }
+    .chat-input input { flex: 1; padding: 9px 14px; background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 8px; color: #f0f0f0; font-size: 13px; font-family: 'Inter', sans-serif; outline: none; }
+    .chat-input input:focus { border-color: #534AB7; }
+    .send-btn { padding: 9px 16px; background: #534AB7; color: #fff; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .empty-state { text-align: center; padding: 24px; color: #555; font-size: 13px; }
+    .loading { color: #555; font-size: 13px; padding: 12px; }
+    .alert { padding: 14px 16px; border-radius: 10px; margin-bottom: 16px; font-size: 13px; background: #1a1830; border: 1px solid #2e2a5e; color: #9D96E8; }
+  </style>
+</head>
+<body>
+
+  <div id="loginOverlay">
+    <div class="login-card">
+      <div class="icon">👥</div>
+      <h2>Espace Staff Axiora</h2>
+      <p>Connectez-vous avec vos identifiants staff.</p>
+      <input type="email" id="staffEmail" placeholder="votre@email.com">
+      <input type="password" id="staffPassword" placeholder="Mot de passe" style="margin-top:0">
+      <button onclick="connecterStaff()">Se connecter →</button>
+      <div class="login-error" id="loginError">❌ Identifiants incorrects</div>
+    </div>
+  </div>
+
+  <div id="staffContent">
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <a href="/" class="logo">Axio<span>ra</span></a>
+        <span class="staff-badge">STAFF</span>
+      </div>
+      <div class="sidebar-user">
+        <div class="user-av" id="staffInitial">S</div>
+        <div>
+          <div class="user-name" id="staffName">Staff</div>
+          <div class="user-role">👤 Membre de l'équipe</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">Gestion</div>
+        <a href="#" class="nav-item active"><span class="icon">🏠</span> Tableau de bord</a>
+        <a href="#" class="nav-item"><span class="icon">📦</span> Commandes <span class="nav-badge" id="badgeCommandes">0</span></a>
+        <a href="#" class="nav-item"><span class="icon">📈</span> Projets</a>
+        <div class="nav-section">Communication</div>
+        <a href="#" class="nav-item"><span class="icon">💬</span> Messages clients</a>
+        <a href="#" class="nav-item"><span class="icon">🔔</span> Notifications</a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" onclick="staffLogout()">🚪 Déconnexion</button>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="page-header">
+        <h1 id="welcomeStaff">Bonjour 👋</h1>
+        <p>Voici vos tâches et commandes assignées.</p>
+      </div>
+
+      <div class="alert">ℹ️ Vous avez accès aux commandes et messages clients uniquement. Pour toute question, contactez le fondateur.</div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">📦 Commandes actives</div>
+          <div class="stat-value" id="statCommandes">0</div>
+          <div class="stat-sub">en cours</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">📈 Projets en cours</div>
+          <div class="stat-value" id="statProjets">0</div>
+          <div class="stat-sub">à suivre</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">💬 Messages</div>
+          <div class="stat-value" id="statMessages">0</div>
+          <div class="stat-sub">non lus</div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header"><h2>📦 Commandes à traiter</h2></div>
+        <div class="table-card">
+          <table>
+            <thead>
+              <tr><th>ID</th><th>Service</th><th>Progression</th><th>Statut</th><th>Date</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="commandesTable">
+              <tr><td colspan="6" class="loading">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="section">
+          <div class="section-header"><h2>📈 Projets en cours</h2></div>
+          <div id="projetsList"><div class="loading">Chargement...</div></div>
+        </div>
+
+        <div class="section">
+          <div class="section-header"><h2>💬 Messages clients</h2></div>
+          <div class="chat-card">
+            <div class="chat-header">
+              <div class="chat-dot"></div>
+              <span class="chat-title">Support Axiora</span>
+            </div>
+            <div class="chat-messages">
+              <div class="msg">
+                <div class="msg-av" style="background:#534AB7;color:#fff">C</div>
+                <div>
+                  <div class="msg-bubble">Bonjour, où en est ma commande ?</div>
+                  <div class="msg-time">Aujourd'hui 14:32</div>
+                </div>
+              </div>
+            </div>
+            <div class="chat-input">
+              <input type="text" id="chatInput" placeholder="Répondre au client…">
+              <button class="send-btn" onclick="envoyerMessage()">Envoyer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'https://axiora-api.vercel.app';
+
+    async function connecterStaff() {
+      const email = document.getElementById('staffEmail').value.trim();
+      const password = document.getElementById('staffPassword').value;
+      if (!email || !password) return;
+
+      try {
+        const res = await fetch(`${API_URL}/staff/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          sessionStorage.setItem('staff_session', JSON.stringify(data.staff));
+          afficherEspaceStaff(data.staff);
+        } else {
+          document.getElementById('loginError').style.display = 'block';
+        }
+      } catch(e) {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+
+    function afficherEspaceStaff(staff) {
+      document.getElementById('loginOverlay').style.display = 'none';
+      document.getElementById('staffContent').style.display = 'flex';
+      const prenom = staff.prenom || 'Staff';
+      document.getElementById('staffInitial').textContent = prenom.charAt(0).toUpperCase();
+      document.getElementById('staffName').textContent = prenom + ' ' + (staff.nom || '');
+      document.getElementById('welcomeStaff').textContent = `Bonjour ${prenom} 👋`;
+      chargerDonnees();
+    }
+
+    async function chargerDonnees() {
+      const sessionStr = localStorage.getItem('axiora_session');
+      if (!sessionStr) return;
+      const token = JSON.parse(sessionStr).access_token;
+      const headers = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+
+      try {
+        const res = await fetch(`${API_URL}/commandes`, { headers });
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          document.getElementById('statCommandes').textContent = data.filter(c => c.statut === 'en_cours').length;
+          document.getElementById('badgeCommandes').textContent = data.filter(c => c.statut === 'en_cours').length;
+          const sc = { 'en_cours': 's-progress', 'livre': 's-done', 'en_attente': 's-new' };
+          const html = data.map(c => {
+            const date = c.created_at ? new Date(c.created_at).toLocaleDateString('fr-FR') : '-';
+            return `<tr>
+              <td style="color:#555">#${c.id.slice(0,6)}</td>
+              <td>${c.titre || 'Commande'}</td>
+              <td><div class="mini-progress"><div class="mini-fill" style="width:0%"></div></div>-</td>
+              <td><span class="status-pill ${sc[c.statut] || 's-new'}">${c.statut || 'en attente'}</span></td>
+              <td style="color:#555">${date}</td>
+              <td><button class="action-btn">✏️ Traiter</button></td>
+            </tr>`;
+          }).join('');
+          document.getElementById('commandesTable').innerHTML = html || '<tr><td colspan="6" class="empty-state">Aucune commande</td></tr>';
+        }
+      } catch(e) {
+        document.getElementById('commandesTable').innerHTML = '<tr><td colspan="6" class="empty-state">Aucune commande</td></tr>';
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/projets`, { headers });
+        const data = await res.json();
+        if (Array.isArray(data)) {
+          document.getElementById('statProjets').textContent = data.filter(p => p.statut === 'en_cours').length;
+          const html = data.slice(0,3).map(p => `
+            <div style="background:#141414;border:1px solid #1f1f1f;border-radius:10px;padding:14px;margin-bottom:10px;">
+              <div style="font-size:13px;font-weight:500;margin-bottom:8px;">${p.titre || 'Projet'}</div>
+              <div style="height:4px;background:#1f1f1f;border-radius:99px;overflow:hidden;">
+                <div style="height:100%;width:${p.progression||0}%;background:linear-gradient(90deg,#534AB7,#7F77DD);border-radius:99px;"></div>
+              </div>
+              <div style="font-size:11px;color:#555;margin-top:6px;text-align:right;">${p.progression||0}%</div>
+            </div>
+          `).join('');
+          document.getElementById('projetsList').innerHTML = html || '<div class="empty-state">Aucun projet</div>';
+        }
+      } catch(e) {
+        document.getElementById('projetsList').innerHTML = '<div class="empty-state">Aucun projet</div>';
+      }
+    }
+
+    function envoyerMessage() {
+      const input = document.getElementById('chatInput');
+      const msg = input.value.trim();
+      if (!msg) return;
+      const messages = document.querySelector('.chat-messages');
+      const staff = JSON.parse(sessionStorage.getItem('staff_session') || '{}');
+      const initial = (staff.prenom || 'S').charAt(0).toUpperCase();
+      messages.innerHTML += `
+        <div class="msg mine">
+          <div class="msg-av">${initial}</div>
+          <div><div class="msg-bubble">${msg}</div><div class="msg-time">À l'instant</div></div>
+        </div>`;
+      input.value = '';
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function staffLogout() {
+      sessionStorage.removeItem('staff_session');
+      window.location.reload();
+    }
+
+    // Vérifier session existante
+    const existingSession = sessionStorage.getItem('staff_session');
+    if (existingSession) afficherEspaceStaff(JSON.parse(existingSession));
+
+    document.getElementById('staffPassword')?.addEventListener('keypress', e => {
+      if (e.key === 'Enter') connecterStaff();
+    });
+  </script>
+</body>
+</html>
