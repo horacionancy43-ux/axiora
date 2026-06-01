@@ -8,12 +8,7 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background: #0a0a0a; color: #f0f0f0; display: flex; min-height: 100vh; }
-
-    /* SIDEBAR */
-    .sidebar {
-      width: 240px; background: #0f0f0f; border-right: 1px solid #1f1f1f;
-      display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 10;
-    }
+    .sidebar { width: 240px; background: #0f0f0f; border-right: 1px solid #1f1f1f; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 10; }
     .sidebar-logo { padding: 20px 24px; border-bottom: 1px solid #1f1f1f; }
     .logo { font-size: 18px; font-weight: 600; color: #7F77DD; text-decoration: none; }
     .logo span { color: #f0f0f0; }
@@ -28,31 +23,24 @@
     .nav-item.active { color: #f0f0f0; background: #1a1830; border-right: 2px solid #534AB7; }
     .nav-item .icon { font-size: 16px; width: 20px; text-align: center; }
     .nav-badge { margin-left: auto; background: #534AB7; color: #fff; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 99px; }
-    .sidebar-footer { padding: 16px 24px; border-top: 1px solid #1f1f1f; }
-    .logout-btn { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; cursor: pointer; text-decoration: none; transition: color .2s; }
+    .sidebar-footer { padding: 16px 24px; border-top: 1px solid #1f1f1f; display: flex; flex-direction: column; gap: 8px; }
+    .logout-btn { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; cursor: pointer; text-decoration: none; transition: color .2s; background: none; border: none; font-family: 'Inter', sans-serif; }
     .logout-btn:hover { color: #f0f0f0; }
-
-    /* MAIN */
     .main { margin-left: 240px; flex: 1; padding: 32px; }
     .page-header { margin-bottom: 28px; }
     .page-header h1 { font-size: 22px; font-weight: 600; margin-bottom: 4px; }
     .page-header p { font-size: 14px; color: #777; }
-
-    /* STATS */
     .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
     .stat-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 18px; }
-    .stat-label { font-size: 12px; color: #777; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+    .stat-label { font-size: 12px; color: #777; margin-bottom: 8px; }
     .stat-value { font-size: 24px; font-weight: 600; margin-bottom: 4px; }
     .stat-sub { font-size: 12px; color: #555; }
     .stat-card.highlight { border-color: #2e2a5e; background: #1a1830; }
     .stat-card.highlight .stat-value { color: #7F77DD; }
-
-    /* PROJETS */
     .section { margin-bottom: 28px; }
     .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
     .section-header h2 { font-size: 15px; font-weight: 600; }
     .section-link { font-size: 13px; color: #7F77DD; text-decoration: none; }
-
     .project-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 18px; margin-bottom: 12px; }
     .project-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
     .project-name { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
@@ -62,17 +50,11 @@
     .status-done { background: #0a2218; color: #4ade80; border: 1px solid #0f3a28; }
     .status-review { background: #2a1800; color: #f0a500; border: 1px solid #3a2200; }
     .progress-bar { height: 6px; background: #1f1f1f; border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
-    .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #534AB7, #7F77DD); transition: width .3s; }
+    .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #534AB7, #7F77DD); }
     .progress-info { display: flex; justify-content: space-between; font-size: 12px; color: #555; }
-
-    /* COFFRE FORT */
     .vault-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 18px; }
-    .vault-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-    .vault-icon { font-size: 24px; }
-    .vault-title { font-size: 14px; font-weight: 500; }
-    .vault-sub { font-size: 12px; color: #777; }
     .storage-bar { height: 8px; background: #1f1f1f; border-radius: 99px; overflow: hidden; margin-bottom: 8px; }
-    .storage-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #534AB7, #9D96E8); width: 23%; }
+    .storage-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, #534AB7, #9D96E8); }
     .storage-info { display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-bottom: 16px; }
     .files-list { display: flex; flex-direction: column; gap: 8px; }
     .file-item { display: flex; align-items: center; gap: 10px; padding: 10px; background: #0f0f0f; border-radius: 8px; }
@@ -81,8 +63,11 @@
     .file-size { font-size: 11px; color: #555; }
     .file-date { font-size: 11px; color: #555; margin-right: 8px; }
     .file-dl { font-size: 12px; color: #7F77DD; cursor: pointer; text-decoration: none; }
-
-    /* CHAT PRIVE */
+    .invoice-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #0f0f0f; border-radius: 8px; margin-bottom: 8px; }
+    .invoice-icon { font-size: 18px; flex-shrink: 0; }
+    .invoice-name { font-size: 13px; font-weight: 500; flex: 1; }
+    .invoice-amount { font-size: 13px; color: #7F77DD; font-weight: 500; margin-right: 12px; }
+    .invoice-status { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 99px; background: #0a2218; color: #4ade80; border: 1px solid #0f3a28; }
     .chat-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; overflow: hidden; }
     .chat-header { padding: 14px 18px; border-bottom: 1px solid #1f1f1f; display: flex; align-items: center; gap: 10px; }
     .chat-dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; }
@@ -100,49 +85,39 @@
     .chat-input { padding: 12px 16px; border-top: 1px solid #1f1f1f; display: flex; gap: 8px; }
     .chat-input input { flex: 1; padding: 9px 14px; background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 8px; color: #f0f0f0; font-size: 13px; font-family: 'Inter', sans-serif; outline: none; }
     .chat-input input:focus { border-color: #534AB7; }
-    .send-btn { padding: 9px 16px; background: #534AB7; color: #fff; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
-
-    /* FACTURES */
-    .invoice-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: #0f0f0f; border-radius: 8px; margin-bottom: 8px; }
-    .invoice-icon { font-size: 18px; flex-shrink: 0; }
-    .invoice-name { font-size: 13px; font-weight: 500; flex: 1; }
-    .invoice-amount { font-size: 13px; color: #7F77DD; font-weight: 500; margin-right: 12px; }
-    .invoice-status { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 99px; background: #0a2218; color: #4ade80; border: 1px solid #0f3a28; }
-    .invoice-dl { font-size: 12px; color: #7F77DD; cursor: pointer; }
-
-    /* NOTES */
+    .send-btn { padding: 9px 16px; background: #534AB7; color: #fff; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; }
     .notes-card { background: #141414; border: 1px solid #1f1f1f; border-radius: 12px; padding: 18px; }
     .notes-card h3 { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
     .notes-card p { font-size: 12px; color: #555; margin-bottom: 12px; }
     .notes-card textarea { width: 100%; padding: 10px 14px; background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 8px; color: #f0f0f0; font-size: 13px; font-family: 'Inter', sans-serif; outline: none; min-height: 80px; resize: vertical; line-height: 1.6; }
     .notes-card textarea:focus { border-color: #534AB7; }
-    .notes-save { margin-top: 8px; padding: 8px 16px; background: #534AB7; color: #fff; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; font-family: 'Inter', sans-serif; }
-
+    .notes-save { margin-top: 8px; padding: 8px 16px; background: #534AB7; color: #fff; border: none; border-radius: 8px; font-size: 13px; cursor: pointer; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .empty-state { text-align: center; padding: 24px; color: #555; font-size: 13px; }
+    .loading { color: #555; font-size: 13px; padding: 12px; }
   </style>
 </head>
 <body>
 
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sidebar-logo">
       <a href="/" class="logo">Axio<span>ra</span></a>
     </div>
     <div class="sidebar-user">
-      <div class="user-av">H</div>
+      <div class="user-av" id="userInitial">?</div>
       <div>
-        <div class="user-name">Horacio</div>
-        <div class="user-plan">⭐ Plan Pro</div>
+        <div class="user-name" id="userName">Chargement...</div>
+        <div class="user-plan">⭐ Client Axiora</div>
       </div>
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section">Principal</div>
       <a href="#" class="nav-item active"><span class="icon">🏠</span> Tableau de bord</a>
-      <a href="#" class="nav-item"><span class="icon">📦</span> Mes commandes <span class="nav-badge">2</span></a>
+      <a href="#" class="nav-item"><span class="icon">📦</span> Mes commandes <span class="nav-badge" id="badgeCommandes">0</span></a>
       <a href="#" class="nav-item"><span class="icon">📈</span> Suivi projets</a>
       <div class="nav-section">Espace</div>
       <a href="#" class="nav-item"><span class="icon">🗄️</span> Coffre-fort</a>
-      <a href="#" class="nav-item"><span class="icon">💬</span> Salon privé <span class="nav-badge">1</span></a>
+      <a href="#" class="nav-item"><span class="icon">💬</span> Salon privé</a>
       <a href="#" class="nav-item"><span class="icon">📄</span> Factures</a>
       <a href="#" class="nav-item"><span class="icon">📝</span> Mes notes</a>
       <div class="nav-section">Compte</div>
@@ -152,134 +127,66 @@
     </nav>
     <div class="sidebar-footer">
       <a href="/" class="logout-btn">⬅️ Retour au site</a>
+      <button class="logout-btn" onclick="logout()">🚪 Déconnexion</button>
     </div>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
     <div class="page-header">
-      <h1>Bonjour Horacio 👋</h1>
+      <h1 id="welcomeMsg">Bonjour 👋</h1>
       <p>Voici un aperçu de votre espace client Axiora.</p>
     </div>
 
-    <!-- STATS -->
     <div class="stats-grid">
       <div class="stat-card highlight">
         <div class="stat-label">🗄️ Coffre-fort</div>
-        <div class="stat-value">2,3 GB</div>
-        <div class="stat-sub">sur 50 GB utilisés</div>
+        <div class="stat-value" id="statFichiers">0</div>
+        <div class="stat-sub">fichiers stockés</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">📦 Commandes</div>
-        <div class="stat-value">4</div>
-        <div class="stat-sub">dont 2 en cours</div>
+        <div class="stat-value" id="statCommandes">0</div>
+        <div class="stat-sub" id="statCommandesSub">aucune commande</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">💰 Total dépensé</div>
-        <div class="stat-value">89 €</div>
+        <div class="stat-value" id="statTotal">0 €</div>
         <div class="stat-sub">depuis le début</div>
       </div>
       <div class="stat-card">
-        <div class="stat-label">⭐ Plan actuel</div>
-        <div class="stat-value" style="font-size:16px;margin-top:4px">Pro</div>
-        <div class="stat-sub">Renouvellement le 01/07</div>
+        <div class="stat-label">📈 Projets actifs</div>
+        <div class="stat-value" id="statProjets">0</div>
+        <div class="stat-sub">en cours</div>
       </div>
     </div>
 
-    <!-- PROJETS EN COURS -->
     <div class="section">
       <div class="section-header">
         <h2>📈 Projets en cours</h2>
         <a href="#" class="section-link">Voir tout →</a>
       </div>
-      <div class="project-card">
-        <div class="project-top">
-          <div>
-            <div class="project-name">Site vitrine — Boulangerie Martin</div>
-            <div class="project-type">Création de site web · Commande #1042</div>
-          </div>
-          <span class="project-status status-progress">En cours</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
-        <div class="progress-info"><span>Design validé · Intégration en cours</span><span>65%</span></div>
-      </div>
-      <div class="project-card">
-        <div class="project-top">
-          <div>
-            <div class="project-name">Règlement serveur Discord</div>
-            <div class="project-type">Règlement · Commande #1039</div>
-          </div>
-          <span class="project-status status-review">En révision</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:90%"></div></div>
-        <div class="progress-info"><span>En attente de votre validation</span><span>90%</span></div>
-      </div>
+      <div id="projetsList"><div class="loading">Chargement...</div></div>
     </div>
 
     <div class="grid-2">
-
-      <!-- COFFRE FORT -->
       <div class="section">
         <div class="section-header"><h2>🗄️ Coffre-fort numérique</h2><a href="#" class="section-link">Gérer →</a></div>
         <div class="vault-card">
-          <div class="storage-bar"><div class="storage-fill"></div></div>
-          <div class="storage-info"><span>2,3 GB utilisés</span><span>50 GB disponibles</span></div>
-          <div class="files-list">
-            <div class="file-item">
-              <span class="file-icon">📄</span>
-              <span class="file-name">Règlement_Discord_v2.pdf</span>
-              <span class="file-size">245 KB</span>
-              <span class="file-date">12/05</span>
-              <a href="#" class="file-dl">⬇</a>
-            </div>
-            <div class="file-item">
-              <span class="file-icon">🌐</span>
-              <span class="file-name">Site_vitrine_preview.zip</span>
-              <span class="file-size">1,8 MB</span>
-              <span class="file-date">18/05</span>
-              <a href="#" class="file-dl">⬇</a>
-            </div>
-            <div class="file-item">
-              <span class="file-icon">📋</span>
-              <span class="file-name">Facture_001_Axiora.pdf</span>
-              <span class="file-size">89 KB</span>
-              <span class="file-date">01/05</span>
-              <a href="#" class="file-dl">⬇</a>
-            </div>
-          </div>
+          <div class="storage-bar"><div class="storage-fill" style="width:0%" id="storageBar"></div></div>
+          <div class="storage-info"><span id="storageUsed">0 fichiers</span><span>Coffre-fort sécurisé</span></div>
+          <div class="files-list" id="filesList"><div class="loading">Chargement...</div></div>
         </div>
       </div>
 
-      <!-- FACTURES -->
       <div class="section">
-        <div class="section-header"><h2>📄 Dernières factures</h2><a href="#" class="section-link">Tout voir →</a></div>
+        <div class="section-header"><h2>📄 Dernières commandes</h2><a href="#" class="section-link">Tout voir →</a></div>
         <div style="background:#141414;border:1px solid #1f1f1f;border-radius:12px;padding:16px;">
-          <div class="invoice-item">
-            <span class="invoice-icon">🧾</span>
-            <span class="invoice-name">Règlement Discord</span>
-            <span class="invoice-amount">9,99 €</span>
-            <span class="invoice-status">Payée</span>
-          </div>
-          <div class="invoice-item">
-            <span class="invoice-icon">🧾</span>
-            <span class="invoice-name">Abonnement Pro — Mai</span>
-            <span class="invoice-amount">12,99 €</span>
-            <span class="invoice-status">Payée</span>
-          </div>
-          <div class="invoice-item">
-            <span class="invoice-icon">🧾</span>
-            <span class="invoice-name">Site vitrine — Acompte</span>
-            <span class="invoice-amount">50,00 €</span>
-            <span class="invoice-status">Payée</span>
-          </div>
+          <div id="commandesList"><div class="loading">Chargement...</div></div>
         </div>
       </div>
-
     </div>
 
     <div class="grid-2">
-
-      <!-- SALON PRIVE -->
       <div class="section">
         <div class="section-header"><h2>💬 Salon privé</h2></div>
         <div class="chat-card">
@@ -292,47 +199,171 @@
             <div class="msg">
               <div class="msg-av support">A</div>
               <div>
-                <div class="msg-bubble">Bonjour Horacio ! Votre règlement Discord est en cours de révision finale. Vous devriez le recevoir d'ici 24h.</div>
-                <div class="msg-time">Hier 14:32</div>
-              </div>
-            </div>
-            <div class="msg mine">
-              <div class="msg-av">H</div>
-              <div>
-                <div class="msg-bubble">Super merci ! Est-ce que je peux encore modifier quelques points ?</div>
-                <div class="msg-time">Hier 15:01</div>
-              </div>
-            </div>
-            <div class="msg">
-              <div class="msg-av support">A</div>
-              <div>
-                <div class="msg-bubble">Bien sûr, pas de problème ! Dites-moi ce que vous souhaitez modifier.</div>
-                <div class="msg-time">Hier 15:08</div>
+                <div class="msg-bubble">Bonjour ! Bienvenue sur Axiora. Comment pouvons-nous vous aider ?</div>
+                <div class="msg-time">Aujourd'hui</div>
               </div>
             </div>
           </div>
           <div class="chat-input">
-            <input type="text" placeholder="Écrire un message…">
-            <button class="send-btn">Envoyer</button>
+            <input type="text" id="chatInput" placeholder="Écrire un message…">
+            <button class="send-btn" onclick="sendMessage()">Envoyer</button>
           </div>
         </div>
       </div>
 
-      <!-- NOTES PRIVEES -->
       <div class="section">
         <div class="section-header"><h2>📝 Mes notes privées</h2></div>
         <div class="notes-card">
           <h3>Notes personnelles</h3>
-          <p>Visibles uniquement par vous et le support.</p>
-          <textarea placeholder="Ajoutez vos notes ici…">- Demander à modifier la section sanctions du règlement
-- Vérifier la date de livraison du site vitrine
-- Penser à upgrader vers Premium en juillet</textarea>
-          <button class="notes-save">Sauvegarder</button>
+          <p>Visibles uniquement par vous.</p>
+          <textarea id="notesArea" placeholder="Ajoutez vos notes ici…"></textarea>
+          <button class="notes-save" onclick="saveNotes()">Sauvegarder</button>
         </div>
       </div>
-
     </div>
   </div>
 
+  <script>
+    const API_URL = 'https://axiora-api.vercel.app';
+
+    async function init() {
+      const sessionStr = localStorage.getItem('axiora_session');
+      if (!sessionStr) { window.location.href = '/connexion'; return; }
+      const session = JSON.parse(sessionStr);
+      const user = session.user;
+      if (!user) { window.location.href = '/connexion'; return; }
+
+      const prenom = user.user_metadata?.prenom || user.email.split('@')[0];
+      const nom = user.user_metadata?.nom || '';
+      document.getElementById('userInitial').textContent = prenom.charAt(0).toUpperCase();
+      document.getElementById('userName').textContent = prenom + (nom ? ' ' + nom : '');
+      document.getElementById('welcomeMsg').textContent = `Bonjour ${prenom} 👋`;
+
+      const token = session.access_token;
+      const headers = { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+
+      // Commandes
+      try {
+        const res = await fetch(`${API_URL}/commandes`, { headers });
+        const data = await res.json();
+        if (Array.isArray(data)) afficherCommandes(data);
+        else afficherCommandesVide();
+      } catch(e) { afficherCommandesVide(); }
+
+      // Projets
+      try {
+        const res = await fetch(`${API_URL}/projets`, { headers });
+        const data = await res.json();
+        if (Array.isArray(data)) afficherProjets(data);
+        else afficherProjetsVide();
+      } catch(e) { afficherProjetsVide(); }
+
+      // Fichiers
+      try {
+        const res = await fetch(`${API_URL}/fichiers`, { headers });
+        const data = await res.json();
+        if (Array.isArray(data)) afficherFichiers(data);
+        else afficherFichiersVide();
+      } catch(e) { afficherFichiersVide(); }
+    }
+
+    function afficherCommandes(commandes) {
+      document.getElementById('statCommandes').textContent = commandes.length;
+      const enCours = commandes.filter(c => c.statut === 'en_cours').length;
+      document.getElementById('statCommandesSub').textContent = enCours > 0 ? `dont ${enCours} en cours` : 'aucune en cours';
+      document.getElementById('badgeCommandes').textContent = enCours;
+      const total = commandes.reduce((sum, c) => sum + (c.montant || 0), 0);
+      document.getElementById('statTotal').textContent = total.toFixed(2) + ' €';
+      const html = commandes.slice(0, 3).map(c => `
+        <div class="invoice-item">
+          <span class="invoice-icon">🧾</span>
+          <span class="invoice-name">${c.titre || 'Commande'}</span>
+          <span class="invoice-amount">${c.montant ? c.montant + ' €' : '-'}</span>
+          <span class="invoice-status">${c.statut || 'en attente'}</span>
+        </div>`).join('');
+      document.getElementById('commandesList').innerHTML = html || '<div class="empty-state">Aucune commande</div>';
+    }
+
+    function afficherCommandesVide() {
+      document.getElementById('commandesList').innerHTML = '<div class="empty-state">Aucune commande pour le moment</div>';
+    }
+
+    function afficherProjets(projets) {
+      document.getElementById('statProjets').textContent = projets.filter(p => p.statut === 'en_cours').length;
+      const html = projets.slice(0, 2).map(p => `
+        <div class="project-card">
+          <div class="project-top">
+            <div>
+              <div class="project-name">${p.titre || 'Projet'}</div>
+              <div class="project-type">${p.statut || 'en cours'}</div>
+            </div>
+            <span class="project-status status-progress">${p.statut === 'en_cours' ? 'En cours' : p.statut}</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${p.progression || 0}%"></div></div>
+          <div class="progress-info"><span>Progression</span><span>${p.progression || 0}%</span></div>
+        </div>`).join('');
+      document.getElementById('projetsList').innerHTML = html || '<div class="empty-state">Aucun projet en cours</div>';
+    }
+
+    function afficherProjetsVide() {
+      document.getElementById('projetsList').innerHTML = '<div class="empty-state">Aucun projet en cours</div>';
+    }
+
+    function afficherFichiers(fichiers) {
+      document.getElementById('statFichiers').textContent = fichiers.length;
+      document.getElementById('storageUsed').textContent = fichiers.length + ' fichier(s)';
+      document.getElementById('storageBar').style.width = Math.min(fichiers.length * 2, 100) + '%';
+      const icons = { pdf: '📄', zip: '🗜️', png: '🖼️', jpg: '🖼️', doc: '📝' };
+      const html = fichiers.slice(0, 3).map(f => {
+        const ext = (f.nom || '').split('.').pop().toLowerCase();
+        const date = f.created_at ? new Date(f.created_at).toLocaleDateString('fr-FR', {day:'2-digit', month:'2-digit'}) : '';
+        return `<div class="file-item">
+          <span class="file-icon">${icons[ext] || '📁'}</span>
+          <span class="file-name">${f.nom || 'Fichier'}</span>
+          <span class="file-size">${f.taille || ''}</span>
+          <span class="file-date">${date}</span>
+          ${f.url ? `<a href="${f.url}" class="file-dl" target="_blank">⬇</a>` : ''}
+        </div>`;
+      }).join('');
+      document.getElementById('filesList').innerHTML = html || '<div class="empty-state">Aucun fichier</div>';
+    }
+
+    function afficherFichiersVide() {
+      document.getElementById('filesList').innerHTML = '<div class="empty-state">Aucun fichier dans le coffre-fort</div>';
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('chatInput');
+      const msg = input.value.trim();
+      if (!msg) return;
+      const session = JSON.parse(localStorage.getItem('axiora_session') || '{}');
+      const prenom = session.user?.user_metadata?.prenom || 'Vous';
+      const messages = document.querySelector('.chat-messages');
+      messages.innerHTML += `
+        <div class="msg mine">
+          <div class="msg-av">${prenom.charAt(0).toUpperCase()}</div>
+          <div><div class="msg-bubble">${msg}</div><div class="msg-time">À l'instant</div></div>
+        </div>`;
+      input.value = '';
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function saveNotes() {
+      localStorage.setItem('axiora_notes', document.getElementById('notesArea').value);
+      alert('Notes sauvegardées !');
+    }
+
+    function logout() {
+      localStorage.removeItem('axiora_session');
+      localStorage.removeItem('axiora_notes');
+      window.location.href = '/connexion';
+    }
+
+    const savedNotes = localStorage.getItem('axiora_notes');
+    if (savedNotes) document.getElementById('notesArea').value = savedNotes;
+    document.getElementById('chatInput').addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+
+    init();
+  </script>
 </body>
 </html>
