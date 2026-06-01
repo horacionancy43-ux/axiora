@@ -1,15 +1,9 @@
 {
-  "rewrites": [
-    { "source": "/services", "destination": "/services.html" },
-    { "source": "/boutique", "destination": "/boutique.html" },
-    { "source": "/abonnements", "destination": "/abonnements.html" },
-    { "source": "/avis", "destination": "/avis.html" },
-    { "source": "/apropos", "destination": "/apropos.html" },
-    { "source": "/contact", "destination": "/contact.html" },
-    { "source": "/connexion", "destination": "/connexion.html" },
-    { "source": "/inscription", "destination": "/inscription.html" },
-    { "source": "/dashboard", "destination": "/dashboard.html" },
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/", "destination": "/index.html" }
+  "version": 2,
+  "builds": [
+    { "src": "server.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "server.js" }
   ]
 }
